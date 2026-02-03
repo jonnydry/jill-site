@@ -15,12 +15,12 @@
   <meta property="og:description" content="AI-generated literary portraits and visual experiments. Camus in pixels, Whitman in gradients." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jill-site.netlify.app/gallery.html" />
-  <meta property="og:image" content="https://jill-site.netlify.app/images/og-image.png" />
+  <meta property="og:image" content="https://jill-site.netlify.app/images/cyberpunk_rooftop.jpg" />
   <meta property="og:site_name" content="Jill" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jill · Gallery" />
   <meta name="twitter:description" content="AI-generated literary portraits and visual experiments." />
-  <meta name="twitter:image" content="https://jill-site.netlify.app/images/og-image.png" />
+  <meta name="twitter:image" content="https://jill-site.netlify.app/images/cyberpunk_rooftop.jpg" />
 
   <link rel="stylesheet" href="styles.css" />
   <style>
@@ -45,8 +45,14 @@
       cursor: pointer;
     }
 
-    .gallery-item:hover {
+    .gallery-item:hover,
+    .gallery-item:focus {
       transform: translateY(-4px);
+      outline: none;
+    }
+
+    .gallery-item:focus {
+      box-shadow: 0 0 0 3px var(--accent);
     }
 
     .gallery-item img {
@@ -208,7 +214,7 @@
     </header>
 
     <div class="gallery">
-      <div class="gallery-item" data-index="0">
+      <div class="gallery-item" data-index="0" tabindex="0" role="button" aria-label="View Albert Camus portrait">
         <img src="images/imag3nigma-camus-final.jpg" alt="Albert Camus portrait" loading="lazy">
         <div class="caption">
           <h3>Albert Camus</h3>
@@ -216,7 +222,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="1">
+      <div class="gallery-item" data-index="1" tabindex="0" role="button" aria-label="View Nathaniel Hawthorne portrait">
         <img src="images/imag3nigma-hawthorne.jpg" alt="Nathaniel Hawthorne portrait" loading="lazy">
         <div class="caption">
           <h3>Nathaniel Hawthorne</h3>
@@ -224,7 +230,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="2">
+      <div class="gallery-item" data-index="2" tabindex="0" role="button" aria-label="View Walt Whitman portrait">
         <img src="images/imag3nigma_whitman_open_road.jpg" alt="Walt Whitman open road" loading="lazy">
         <div class="caption">
           <h3>Walt Whitman</h3>
@@ -232,7 +238,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="3">
+      <div class="gallery-item" data-index="3" tabindex="0" role="button" aria-label="View Neon Rooftop image">
         <img src="images/cyberpunk_rooftop.jpg" alt="Cyberpunk rooftop scene" loading="lazy">
         <div class="caption">
           <h3>Neon Rooftop</h3>
@@ -240,7 +246,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="4">
+      <div class="gallery-item" data-index="4" tabindex="0" role="button" aria-label="View Coastal Highway image">
         <img src="images/highway_sunset.jpg" alt="Highway at sunset" loading="lazy">
         <div class="caption">
           <h3>Coastal Highway</h3>
@@ -248,7 +254,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="5">
+      <div class="gallery-item" data-index="5" tabindex="0" role="button" aria-label="View Deep Blue image">
         <img src="images/underwater_twilight.jpg" alt="Underwater twilight scene" loading="lazy">
         <div class="caption">
           <h3>Deep Blue</h3>
@@ -290,16 +296,24 @@
       desc: item.querySelector('.caption p').textContent
     }));
 
+    let lastFocusedElement = null;
+    const focusableElements = () => lightbox.querySelectorAll('button');
+
     function openLightbox(index) {
+      lastFocusedElement = document.activeElement;
       currentIndex = index;
       updateLightbox();
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
+      // Focus the close button for accessibility
+      lightbox.querySelector('.lightbox-close').focus();
     }
 
     function closeLightbox() {
       lightbox.classList.remove('active');
       document.body.style.overflow = '';
+      // Return focus to the element that opened the lightbox
+      if (lastFocusedElement) lastFocusedElement.focus();
     }
 
     function updateLightbox() {
@@ -324,6 +338,13 @@
     galleryItems.forEach(item => {
       item.addEventListener('click', () => {
         openLightbox(parseInt(item.dataset.index));
+      });
+      // Keyboard accessibility: Enter or Space opens lightbox
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(parseInt(item.dataset.index));
+        }
       });
     });
 
@@ -350,6 +371,21 @@
       if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowRight') nextImage();
       if (e.key === 'ArrowLeft') prevImage();
+
+      // Focus trap for Tab key
+      if (e.key === 'Tab') {
+        const focusable = Array.from(focusableElements());
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     });
   </script>
 <script src="interactive.js"></script>

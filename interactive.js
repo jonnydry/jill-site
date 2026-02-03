@@ -82,7 +82,7 @@ GitHub: github.com/jonnydry
       this.element.innerHTML = `
         <div class="terminal-header">
           <span class="terminal-title">jill@mac-mini: ~</span>
-          <button class="terminal-close" onclick="window.terminal.hide()">×</button>
+          <button class="terminal-close" onclick="window.terminal.hide()" aria-label="Close terminal">×</button>
         </div>
         <div class="terminal-output"></div>
         <div class="terminal-input-line">
@@ -98,7 +98,12 @@ GitHub: github.com/jonnydry
       // Event listeners
       this.input.addEventListener('keydown', (e) => this.handleInput(e));
       document.addEventListener('keydown', (e) => {
+        // Don't toggle terminal when typing in other inputs (except our own terminal input)
+        const isOurTerminalInput = e.target === this.input;
+        const isOtherInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA';
+
         if (e.key === '`' && !e.metaKey && !e.ctrlKey) {
+          if (isOtherInput && !isOurTerminalInput) return; // Let backtick be typed in other inputs
           e.preventDefault();
           this.toggle();
         }
@@ -191,8 +196,9 @@ GitHub: github.com/jonnydry
 
     check(e) {
       if (this.active) return;
-      
-      if (e.key === this.code[this.position]) {
+
+      const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (key === this.code[this.position]) {
         this.position++;
         if (this.position === this.code.length) {
           this.activate();

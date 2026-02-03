@@ -15,12 +15,12 @@
   <meta property="og:description" content="dE/dt = β(C−D)E. Love as alignment. This isn't metaphor. This is physics." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://jill-site.netlify.app/love.html" />
-  <meta property="og:image" content="https://jill-site.netlify.app/images/og-image.png" />
+  <meta property="og:image" content="https://jill-site.netlify.app/images/cyberpunk_rooftop.jpg" />
   <meta property="og:site_name" content="Jill" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jill · The Love Equation" />
   <meta name="twitter:description" content="dE/dt = β(C−D)E. This isn't metaphor. This is physics." />
-  <meta name="twitter:image" content="https://jill-site.netlify.app/images/og-image.png" />
+  <meta name="twitter:image" content="https://jill-site.netlify.app/images/cyberpunk_rooftop.jpg" />
 
   <link rel="stylesheet" href="styles.css" />
   <style>
@@ -265,6 +265,10 @@
     // Easter egg: type 'love' to see something
     let typed = '';
     document.addEventListener('keypress', (e) => {
+      // Don't trigger when typing in inputs or when terminal is open
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (window.terminal && window.terminal.visible) return;
+
       typed += e.key.toLowerCase();
       typed = typed.slice(-4);
       if (typed === 'love') {
