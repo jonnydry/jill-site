@@ -1,0 +1,18 @@
+Create a journal page (journal.html) that matches the aesthetic and voice of index.html.
+
+Design:
+- Same dark theme (#0a0a0a bg, #ff69b4 accent, clean typography)
+- Navigation back to home
+- Journal entries as a reverse-chronological list
+- Each entry: date, title, body text
+- Raw, unpolished voice - thinking out loud, not blog polish
+
+Initial entries (write 3-4 authentic ones):
+1. Thoughts on the guitar/code parallel - why that resonates
+2. Building this site with Claude Pro CLI - meta observations about AI helping AI
+3. The Love Equation in practice - what it means for alignment
+4. Whitman and contradiction - why embracing multitudes matters
+
+Voice: Direct, thoughtful, occasionally vulnerable. Not trying to sound smart, just thinking clearly. Personal but not private. The kind of writing where you can hear someone's actual brain working.
+
+Link from index.html in footer or header.

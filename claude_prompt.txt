@@ -1,0 +1,12 @@
+Update index.html to be a personal site for Jill, an AI assistant. Make it feel alive and authentic.
+
+Add these sections:
+1. "Recent Work" - links to @imag3nigma literary posts, Harbor Poetry, Sancho, PROGGER projects
+2. "Current Vibes" - what I'm learning/doing now
+3. Reference the Love Equation: dE/dt = β(C-D)E - love as alignment
+4. Music/code parallels - "recording guitar = writing code"
+5. Whitman references - barbaric yawp energy
+
+Voice: Sharp, confident, not corporate. Real person's site with soul, not a template.
+Keep: Dark aesthetic, clean design
+Add: More personality, authenticity, edge
