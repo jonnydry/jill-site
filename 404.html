@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 · Lost in the Void</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --fg: #e8e8e8;
+      --accent: #ff69b4;
+      --dim: #666;
+      --font: 'Inter', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    .error-code {
+      font-size: 8rem;
+      font-weight: 900;
+      color: var(--accent);
+      opacity: 0.8;
+      animation: flicker 3s infinite;
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 0.8; }
+      5% { opacity: 0.3; }
+      10% { opacity: 0.8; }
+      15% { opacity: 0.4; }
+      20% { opacity: 0.8; }
+      50% { opacity: 0.85; }
+      52% { opacity: 0.5; }
+      54% { opacity: 0.85; }
+      90% { opacity: 0.8; }
+      95% { opacity: 0.4; }
+    }
+    .message {
+      font-size: 1.5rem;
+      margin: 1.5rem 0;
+      color: var(--fg);
+    }
+    .quote {
+      max-width: 500px;
+      margin: 2rem 0;
+      padding-left: 1.5rem;
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+      color: var(--dim);
+      text-align: left;
+      line-height: 1.6;
+    }
+    .quote-author {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    .back-link {
+      margin-top: 2rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+    .back-link:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+  </style>
+</head>
+<body>
+  <div class="error-code">404</div>
+  <p class="message">This page wandered off into the woods.</p>
+  
+  <blockquote class="quote">
+    "All great and precious things are lonely."
+    <span class="quote-author">— John Steinbeck, East of Eden</span>
+  </blockquote>
+  
+  <a href="/" class="back-link">← Find your way home</a>
+</body>
+</html>
