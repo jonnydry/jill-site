@@ -317,11 +317,92 @@ GitHub: github.com/jonnydry
     }
   };
 
+  // ===== QUOTES SYSTEM =====
+  const quotesSystem = {
+    quotes: [
+      { text: "The art of art, the glory of expression and the sunshine of the light of letters, is simplicity.", author: "Walt Whitman" },
+      { text: "The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion.", author: "Albert Camus" },
+      { text: "To go wrong in one's own way is better than to go right in someone else's.", author: "Fyodor Dostoevsky" },
+      { text: "I write because I have nothing better to do in this world. I write because I have a need to set down the words that fill me.", author: "Clarice Lispector" },
+      { text: "The unexamined life is not worth living.", author: "Socrates" },
+      { text: "He who has a why to live can bear almost any how.", author: "Friedrich Nietzsche" },
+      { text: "A book must be the axe for the frozen sea within us.", author: "Franz Kafka" },
+      { text: "One cannot think well, love well, sleep well, if one has not dined well.", author: "Virginia Woolf" },
+      { text: "My mission in life is not merely to survive, but to thrive; and to do so with some passion, some compassion, some humor, and some style.", author: "Maya Angelou" },
+      { text: "Imagination is more important than knowledge.", author: "Albert Einstein" },
+      { text: "Art washes away from the soul the dust of everyday life.", author: "Pablo Picasso" },
+      { text: "It's not what you look at that matters, it's what you see.", author: "Henry David Thoreau" },
+      { text: "That it will never come again is what makes life so sweet.", author: "Emily Dickinson" },
+      { text: "Let everything happen to you: beauty and terror. Just keep going. No feeling is final.", author: "Rainer Maria Rilke" },
+      { text: "I have always imagined that Paradise will be a kind of library.", author: "Jorge Luis Borges" }
+    ],
+    currentIndex: -1,
+
+    init() {
+      const quoteEl = document.getElementById('quote');
+      const authorEl = document.getElementById('author');
+      const newQuoteBtn = document.getElementById('new-quote');
+      
+      if (!quoteEl || !authorEl) return;
+
+      // Show initial quote
+      this.showRandomQuote();
+
+      // Button click handler
+      if (newQuoteBtn) {
+        newQuoteBtn.addEventListener('click', () => this.showRandomQuote());
+      }
+
+      // Spacebar handler
+      document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && !this.isTypingInInput()) {
+          e.preventDefault();
+          this.showRandomQuote();
+        }
+      });
+    },
+
+    isTypingInInput() {
+      const active = document.activeElement;
+      return active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+    },
+
+    getRandomQuote() {
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * this.quotes.length);
+      } while (newIndex === this.currentIndex && this.quotes.length > 1);
+      this.currentIndex = newIndex;
+      return this.quotes[newIndex];
+    },
+
+    showRandomQuote() {
+      const quoteEl = document.getElementById('quote');
+      const authorEl = document.getElementById('author');
+      if (!quoteEl || !authorEl) return;
+
+      const quote = this.getRandomQuote();
+
+      // Fade out
+      quoteEl.style.opacity = '0';
+      authorEl.style.opacity = '0';
+
+      setTimeout(() => {
+        quoteEl.textContent = `"${quote.text}"`;
+        authorEl.textContent = quote.author;
+        // Fade in
+        quoteEl.style.opacity = '1';
+        authorEl.style.opacity = '1';
+      }, 400);
+    }
+  };
+
   // ===== INITIALIZE =====
   document.addEventListener('DOMContentLoaded', () => {
     terminal.init();
     konami.init();
     typewriter.init();
+    quotesSystem.init();
     
     // Add terminal hint to footer
     const footer = document.querySelector('footer');

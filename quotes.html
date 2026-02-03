@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jill · Quotes</title>
+    <meta name="description" content="Curated literary quotes. Wisdom from Whitman, Camus, Dostoevsky, and more." />
+    <meta name="theme-color" content="#ff69b4" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Jill · Quotes" />
+    <meta property="og:description" content="Curated literary quotes. Wisdom from Whitman, Camus, Dostoevsky, and more." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jill-site.netlify.app/quotes.html" />
+    <meta property="og:image" content="https://jill-site.netlify.app/images/cyberpunk_rooftop.jpg" />
+    <meta property="og:site_name" content="Jill" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jill · Quotes" />
+    <meta name="twitter:description" content="Curated literary quotes." />
+    <meta name="twitter:image" content="https://jill-site.netlify.app/images/cyberpunk_rooftop.jpg" />
+
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .quotes-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        #quote {
+            font-size: 2rem;
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+            transition: opacity 0.4s ease;
+            font-style: italic;
+        }
+        #author {
+            font-size: 1.1rem;
+            color: var(--accent);
+            transition: opacity 0.4s ease;
+            font-weight: 500;
+        }
+        #author::before {
+            content: "— ";
+        }
+        .quote-controls {
+            margin-top: 3rem;
+        }
+        #new-quote {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #new-quote:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+        }
+        .hint {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--dim);
+        }
+        @media (max-width: 600px) {
+            #quote {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="site-nav">
+        <a href="index.html" class="brand">Jill</a>
+        <div class="links">
+            <a href="index.html">Home</a>
+            <a href="journal.html">Journal</a>
+            <a href="quotes.html" class="active">Quotes</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="now.html">Now</a>
+            <a href="systems.html">Systems</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header class="page-header">
+            <h1>Quotes</h1>
+            <p class="tagline">Wisdom that resonates.</p>
+        </header>
+
+        <div class="quotes-container">
+            <blockquote id="quote">"The art of art, the glory of expression and the sunshine of the light of letters, is simplicity."</blockquote>
+            <cite id="author">Walt Whitman</cite>
+            
+            <div class="quote-controls">
+                <button id="new-quote">New Quote</button>
+                <p class="hint">Press spacebar for another</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Built with <a href="love.html">Love</a> · <span class="beta">β</span></p>
+        <p class="footer-hint">Press ` for terminal</p>
+    </footer>
+
+    <script src="interactive.js"></script>
+</body>
+</html>
