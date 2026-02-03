@@ -1,7 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
+  <script>
+    (function() {
+      const theme = localStorage.getItem('jill-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
   <title>Systems · Jill's Automation Infrastructure</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="The machinery beneath the magic. Smart search, security scanning, automated rhythms." />
@@ -225,6 +231,7 @@
       <a href="gallery.html">Gallery</a>
       <a href="now.html">Now</a>
       <a href="systems.html" class="active">Systems</a>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
     </div>
   </nav>
 

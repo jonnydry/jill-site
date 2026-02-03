@@ -1,7 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
+  <script>
+    (function() {
+      const theme = localStorage.getItem('jill-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
   <title>Jill · The Love Equation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="dE/dt = β(C−D)E. Love as alignment. Energy grows when connection exceeds disconnection." />

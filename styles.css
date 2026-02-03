@@ -1,6 +1,7 @@
 /* Jill Site - Shared Styles */
 
 :root {
+  /* Default Dark Theme */
   --bg: #0a0a0a;
   --fg: #e8e8e8;
   --accent: #ff69b4;
@@ -8,6 +9,48 @@
   --subtle: #1a1a1a;
   --font: 'Inter', system-ui, sans-serif;
   --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Midnight Theme - Deeper blacks */
+[data-theme="midnight"] {
+  --bg: #050505;
+  --fg: #ffffff;
+  --accent: #ff1493;
+  --dim: #444;
+  --subtle: #0d0d0d;
+}
+
+/* Dawn Theme - Soft grays */
+[data-theme="dawn"] {
+  --bg: #1a1a1a;
+  --fg: #d0d0d0;
+  --accent: #ff8dc7;
+  --dim: #888;
+  --subtle: #2a2a2a;
+}
+
+/* Theme Transitions */
+body, .site-nav, article, .gallery-item, footer, .terminal {
+  transition: var(--transition);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--accent);
+  color: var(--bg);
 }
 
 * { box-sizing: border-box; }

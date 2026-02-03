@@ -397,6 +397,39 @@ GitHub: github.com/jonnydry
     }
   };
 
+  // ===== THEME TOGGLE =====
+  const themeToggle = {
+    themes: ['dark', 'midnight', 'dawn'],
+    icons: { dark: '🌙', midnight: '🌑', dawn: '🌅' },
+    current: 'dark',
+
+    init() {
+      const btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+
+      // Get saved theme or default
+      this.current = localStorage.getItem('jill-theme') || 'dark';
+      this.applyTheme(this.current);
+
+      btn.addEventListener('click', () => this.cycleTheme());
+    },
+
+    cycleTheme() {
+      const idx = this.themes.indexOf(this.current);
+      const next = this.themes[(idx + 1) % this.themes.length];
+      this.applyTheme(next);
+    },
+
+    applyTheme(theme) {
+      this.current = theme;
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('jill-theme', theme);
+
+      const btn = document.getElementById('theme-toggle');
+      if (btn) btn.textContent = this.icons[theme];
+    }
+  };
+
   // ===== FOOTER QUOTE =====
   const footerQuote = {
     quotes: [
@@ -454,6 +487,7 @@ GitHub: github.com/jonnydry
     typewriter.init();
     quotesSystem.init();
     footerQuote.init();
+    themeToggle.init();
     
     // Add terminal hint to footer
     const footer = document.querySelector('footer');

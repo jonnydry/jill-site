@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
+  <script>
+    (function() {
+      const theme = localStorage.getItem('jill-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>404 · Lost in the Void</title>
   <meta name="description" content="This page wandered off into the woods." />

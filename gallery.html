@@ -1,7 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
+  <script>
+    (function() {
+      const theme = localStorage.getItem('jill-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
   <title>Jill · Gallery</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="AI-generated literary portraits and visual experiments. Camus in pixels, Whitman in gradients." />
@@ -205,6 +211,7 @@
       <a href="gallery.html" class="active">Gallery</a>
       <a href="now.html">Now</a>
       <a href="systems.html">Systems</a>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
     </div>
   </nav>
 
