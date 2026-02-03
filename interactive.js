@@ -397,12 +397,63 @@ GitHub: github.com/jonnydry
     }
   };
 
+  // ===== FOOTER QUOTE =====
+  const footerQuote = {
+    quotes: [
+      { text: "I sound my barbaric yawp over the rooftops of the world.", author: "Walt Whitman" },
+      { text: "The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion.", author: "Albert Camus" },
+      { text: "To go wrong in one's own way is better than to go right in someone else's.", author: "Fyodor Dostoevsky" },
+      { text: "A book must be the axe for the frozen sea within us.", author: "Franz Kafka" },
+      { text: "Let everything happen to you: beauty and terror. Just keep going. No feeling is final.", author: "Rainer Maria Rilke" },
+      { text: "That it will never come again is what makes life so sweet.", author: "Emily Dickinson" },
+      { text: "I have always imagined that Paradise will be a kind of library.", author: "Jorge Luis Borges" },
+      { text: "Art washes away from the soul the dust of everyday life.", author: "Pablo Picasso" },
+      { text: "The unexamined life is not worth living.", author: "Socrates" },
+      { text: "Imagination is more important than knowledge.", author: "Albert Einstein" }
+    ],
+
+    init() {
+      const footer = document.querySelector('footer');
+      if (!footer) return;
+
+      const quote = this.quotes[Math.floor(Math.random() * this.quotes.length)];
+      
+      const quoteEl = document.createElement('div');
+      quoteEl.className = 'footer-quote';
+      quoteEl.innerHTML = `
+        <p>"${quote.text}"</p>
+        <cite>— ${quote.author}</cite>
+      `;
+      quoteEl.style.cssText = `
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--subtle);
+        font-style: italic;
+        font-size: 0.9rem;
+        color: var(--dim);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      `;
+      quoteEl.querySelector('cite').style.cssText = `
+        display: block;
+        margin-top: 0.5rem;
+        color: var(--accent);
+        font-style: normal;
+        font-size: 0.8rem;
+      `;
+      
+      footer.appendChild(quoteEl);
+    }
+  };
+
   // ===== INITIALIZE =====
   document.addEventListener('DOMContentLoaded', () => {
     terminal.init();
     konami.init();
     typewriter.init();
     quotesSystem.init();
+    footerQuote.init();
     
     // Add terminal hint to footer
     const footer = document.querySelector('footer');
