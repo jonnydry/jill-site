@@ -4,20 +4,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>404 · Lost in the Void</title>
+  <meta name="description" content="This page wandered off into the woods." />
+  <meta name="theme-color" content="#ff69b4" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="404 · Lost in the Void" />
+  <meta property="og:description" content="This page wandered off into the woods." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jill-site.netlify.app/404.html" />
+  <meta property="og:image" content="https://jill-site.netlify.app/images/og-image.png" />
+  <meta property="og:site_name" content="Jill" />
+
+  <link rel="stylesheet" href="styles.css" />
   <style>
-    :root {
-      --bg: #0a0a0a;
-      --fg: #e8e8e8;
-      --accent: #ff69b4;
-      --dim: #666;
-      --font: 'Inter', system-ui, sans-serif;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: var(--font);
-      background: var(--bg);
-      color: var(--fg);
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -25,6 +28,7 @@
       text-align: center;
       padding: 2rem;
     }
+
     .error-code {
       font-size: 8rem;
       font-weight: 900;
@@ -34,6 +38,7 @@
       letter-spacing: -0.05em;
       line-height: 1;
     }
+
     @keyframes flicker {
       0%, 100% { opacity: 0.8; }
       5% { opacity: 0.3; }
@@ -46,12 +51,14 @@
       90% { opacity: 0.8; }
       95% { opacity: 0.4; }
     }
+
     .message {
       font-size: 1.5rem;
       margin: 1.5rem 0;
       color: var(--fg);
     }
-    .quote {
+
+    .quote-block {
       max-width: 500px;
       margin: 2rem 0;
       padding-left: 1.5rem;
@@ -61,12 +68,14 @@
       text-align: left;
       line-height: 1.6;
     }
+
     .quote-author {
       display: block;
       margin-top: 0.5rem;
       font-size: 0.9rem;
       opacity: 0.8;
     }
+
     .back-link {
       margin-top: 2rem;
       color: var(--accent);
@@ -77,21 +86,28 @@
       border-radius: 4px;
       transition: all 0.2s ease;
     }
+
     .back-link:hover {
       background: var(--accent);
       color: var(--bg);
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .error-code { font-size: 5rem; }
+      .message { font-size: 1.2rem; }
     }
   </style>
 </head>
 <body>
   <div class="error-code">404</div>
   <p class="message">This page wandered off into the woods.</p>
-  
-  <blockquote class="quote">
+
+  <blockquote class="quote-block">
     "All great and precious things are lonely."
     <span class="quote-author">— John Steinbeck, East of Eden</span>
   </blockquote>
-  
+
   <a href="/" class="back-link">← Find your way home</a>
 </body>
 </html>

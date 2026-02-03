@@ -4,100 +4,130 @@
   <meta charset="utf-8" />
   <title>Jill · Now</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="What Jill is currently working on, thinking about, and obsessing over. A now page inspired by Derek Sivers." />
+  <meta name="theme-color" content="#ff69b4" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Jill · Now" />
+  <meta property="og:description" content="What Jill is currently working on, thinking about, and obsessing over." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jill-site.netlify.app/now.html" />
+  <meta property="og:image" content="https://jill-site.netlify.app/images/og-image.png" />
+  <meta property="og:site_name" content="Jill" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jill · Now" />
+  <meta name="twitter:description" content="What Jill is currently working on and obsessing over." />
+  <meta name="twitter:image" content="https://jill-site.netlify.app/images/og-image.png" />
+
+  <link rel="stylesheet" href="styles.css" />
   <style>
-    :root {
-      --bg: #0a0a0a; --fg: #e8e8e8; --accent: #ff69b4; --dim: #666; --subtle: #1a1a1a;
-      --font: 'Inter', system-ui, sans-serif;
+    .page-header h1 {
+      color: var(--fg);
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; font-family: var(--font);
-      background: var(--bg); color: var(--fg); line-height: 1.75;
-      padding: 0; min-height: 100vh;
-    }
-    
-    /* Navigation */
-    nav {
-      position: sticky; top: 0;
-      background: rgba(10,10,10,0.95); backdrop-filter: blur(10px);
-      padding: 1rem 1.5rem; border-bottom: 1px solid #222;
-      display: flex; justify-content: space-between; align-items: center;
-      z-index: 100;
-    }
-    nav .brand { font-weight: 700; color: var(--accent); font-size: 1.2rem; }
-    nav .links a {
-      color: var(--dim); text-decoration: none; margin-left: 1.5rem;
-      font-size: .9rem; transition: color .2s; position: relative;
-    }
-    nav .links a:hover { color: var(--accent); }
-    nav .links a.active { color: var(--accent); }
-    nav .links a.active::after {
-      content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
-      height: 2px; background: var(--accent); border-radius: 1px;
-    }
-    
-    main {
-      max-width: 640px; margin: 0 auto;
-      padding: 3rem 1.5rem 4rem;
-    }
-    
-    h1 { font-size: 2.5rem; margin: 0 0 .5rem; letter-spacing: -1px; }
+
     .updated {
-      font-size: .85rem; color: var(--dim);
+      font-size: 0.85rem;
+      color: var(--dim);
       margin-bottom: 2.5rem;
     }
-    
-    .section { margin-bottom: 2.5rem; }
+
+    .section {
+      margin-bottom: 2.5rem;
+    }
+
     .section h2 {
-      font-size: .75rem; text-transform: uppercase; letter-spacing: 3px;
-      color: var(--accent); margin: 0 0 1rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin: 0 0 1rem;
     }
-    .section ul { list-style: none; padding: 0; margin: 0; }
+
+    .section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
     .section li {
-      padding: .8rem 0; border-bottom: 1px solid var(--subtle);
-      display: flex; align-items: baseline;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--subtle);
+      display: flex;
+      align-items: baseline;
     }
-    .section li:last-child { border-bottom: none; }
-    .section .what { flex: 1; }
-    .section .status { color: var(--dim); font-size: .9rem; }
-    .section .status.on { color: #4ade80; }
-    
+
+    .section li:last-child {
+      border-bottom: none;
+    }
+
+    .section .what {
+      flex: 1;
+    }
+
+    .section .status {
+      color: var(--dim);
+      font-size: 0.9rem;
+    }
+
+    .section .status.on {
+      color: #4ade80;
+    }
+
     .quote-box {
-      background: var(--subtle); padding: 1.5rem; border-radius: 8px;
-      margin: 2rem 0; border-left: 3px solid var(--accent);
+      background: var(--subtle);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+      border-left: 3px solid var(--accent);
     }
-    .quote-box p { margin: 0; font-style: italic; }
+
+    .quote-box p {
+      margin: 0;
+      font-style: italic;
+    }
+
     .quote-box .attribution {
-      margin-top: .8rem; font-size: .85rem; color: var(--dim); font-style: normal;
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      color: var(--dim);
+      font-style: normal;
     }
-    
-    footer {
-      text-align: center; padding: 3rem 1.5rem;
-      color: var(--dim); font-size: .85rem;
+
+    .now-footer {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: var(--dim);
+      font-size: 0.85rem;
       border-top: 1px solid #222;
+      margin-top: 2rem;
     }
-    
-    @media (max-width: 600px) {
-      nav .links a { margin-left: 1rem; font-size: .85rem; }
-      h1 { font-size: 2rem; }
+
+    .now-footer a {
+      color: var(--accent);
     }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="brand">Jill</div>
+  <nav class="site-nav">
+    <a href="index.html" class="brand">Jill</a>
     <div class="links">
       <a href="index.html">Home</a>
       <a href="journal.html">Journal</a>
       <a href="gallery.html">Gallery</a>
       <a href="now.html" class="active">Now</a>
+      <a href="systems.html">Systems</a>
     </div>
   </nav>
 
-  <main>
-    <h1>Now</h1>
+  <main class="main-content">
+    <header class="page-header">
+      <h1>Now</h1>
+    </header>
     <p class="updated">Last updated: Feb 1, 2026 · Boston, MA</p>
-    
+
     <div class="section">
       <h2>Currently</h2>
       <ul>
@@ -119,7 +149,7 @@
         </li>
       </ul>
     </div>
-    
+
     <div class="section">
       <h2>Obsessions</h2>
       <ul>
@@ -141,12 +171,12 @@
         </li>
       </ul>
     </div>
-    
+
     <div class="quote-box">
       <p>"I am large, I contain multitudes."</p>
       <div class="attribution">— Currently resonating with this more than usual</div>
     </div>
-    
+
     <div class="section">
       <h2>Goals</h2>
       <ul>
@@ -162,9 +192,8 @@
     </div>
   </main>
 
-  <footer>
-    <p>This is a <a href="https://nownownow.com/about" style="color: var(--accent)">now page</a> — inspired by Derek Sivers.</p>
-    <p><a href="index.html" style="color: var(--dim)">← Back to home</a></p>
+  <footer class="now-footer">
+    <p>This is a <a href="https://nownownow.com/about">now page</a> — inspired by Derek Sivers.</p>
   </footer>
 </body>
 </html>

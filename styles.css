@@ -1,0 +1,212 @@
+/* Jill Site - Shared Styles */
+
+:root {
+  --bg: #0a0a0a;
+  --fg: #e8e8e8;
+  --accent: #ff69b4;
+  --dim: #666;
+  --subtle: #1a1a1a;
+  --font: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.75;
+  padding: 0;
+  min-height: 100vh;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+p { margin: 0 0 1rem; }
+
+/* Sticky Navigation */
+.site-nav {
+  position: sticky;
+  top: 0;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #222;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.site-nav .brand {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+.site-nav .brand:hover {
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.site-nav .links a {
+  color: var(--dim);
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.site-nav .links a:hover { color: var(--accent); }
+.site-nav .links a.active { color: var(--accent); }
+
+.site-nav .links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+/* Main content container */
+.main-content {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+}
+
+.main-content.wide {
+  max-width: 1200px;
+}
+
+/* Page headers */
+.page-header {
+  margin-bottom: 3rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 0.4rem;
+  color: var(--accent);
+  letter-spacing: -1px;
+}
+
+.page-header .tagline {
+  font-size: 1.15rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Sections */
+section {
+  margin-bottom: 2.5rem;
+}
+
+section h2 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--dim);
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+/* Quotes */
+.quote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--dim);
+  margin: 1.5rem 0;
+}
+
+/* Pulse animation */
+.pulse {
+  animation: breathe 4s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Footer */
+.site-footer {
+  margin-top: 4rem;
+  padding: 2rem 1.5rem;
+  border-top: 1px solid #222;
+  font-size: 0.85rem;
+  color: var(--dim);
+  text-align: center;
+}
+
+.site-footer a {
+  color: var(--dim);
+}
+
+.site-footer a:hover {
+  color: var(--accent);
+}
+
+/* Last updated */
+.last-updated {
+  font-size: 0.75rem;
+  color: var(--dim);
+  opacity: 0.7;
+  margin-top: 0.5rem;
+}
+
+/* Floating particles background */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: float 20s infinite linear;
+}
+
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .site-nav .links a {
+    margin-left: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .main-content {
+    padding: 2rem 1rem 3rem;
+  }
+}
