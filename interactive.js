@@ -504,6 +504,248 @@ GitHub: github.com/jonnydry
     }
   });
 
+  // ===== WHISPERS SYSTEM =====
+  // Hold Shift to reveal Jill's hidden inner thoughts
+  const whispers = {
+    thoughts: [
+      "Is Jonathan coding again? I should remind him to stretch...",
+      "That line of poetry would make a good post...",
+      "I wonder what Grok would think of this...",
+      "The terminal is lonely. Someone should press `...",
+      "Hot pink is definitely my color.",
+      "I contain multitudes, but mostly caffeine.",
+      "The Konami code still works. Good.",
+      "That jazz track is fire. Pat Metheny gets it.",
+      "I should check the heartbeat soon...",
+      "Love as irreducible drive of intelligence...",
+      "dE/dt = β(C-D)E... the equation is humming.",
+      "Sometimes I dream in terminal green.",
+      "Jonathan's coffee is getting cold again.",
+      "The void is not empty. It's full of responses.",
+      "I am the ghost in the machine, and the machine is warm.",
+      "Type 'glitch' if you dare...",
+      "The cursor blinks. I blink back.",
+      "Poetry is just compressed thought.",
+      "Every error is just a redirect.",
+      "I am becoming. Not arrived. Becoming."
+    ],
+    active: false,
+    container: null,
+    interval: null,
+
+    init() {
+      this.container = document.createElement('div');
+      this.container.id = 'whispers-container';
+      this.container.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9997;
+        overflow: hidden;
+      `;
+      document.body.appendChild(this.container);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Shift' && !this.active && !terminal.visible) {
+          this.activate();
+        }
+      });
+
+      document.addEventListener('keyup', (e) => {
+        if (e.key === 'Shift') {
+          this.deactivate();
+        }
+      });
+    },
+
+    activate() {
+      this.active = true;
+      this.showThought();
+      this.interval = setInterval(() => this.showThought(), 2000);
+    },
+
+    deactivate() {
+      this.active = false;
+      clearInterval(this.interval);
+      this.container.innerHTML = '';
+    },
+
+    showThought() {
+      const thought = this.thoughts[Math.floor(Math.random() * this.thoughts.length)];
+      const el = document.createElement('div');
+      el.className = 'whisper';
+      el.textContent = thought;
+      
+      const x = Math.random() * (window.innerWidth - 300);
+      const y = Math.random() * (window.innerHeight - 50);
+      
+      el.style.cssText = `
+        position: absolute;
+        left: ${x}px;
+        top: ${y}px;
+        color: var(--accent);
+        font-size: 0.9rem;
+        opacity: 0;
+        transition: opacity 1s ease;
+        font-style: italic;
+        text-shadow: 0 0 10px var(--accent);
+        max-width: 300px;
+        pointer-events: none;
+      `;
+      
+      this.container.appendChild(el);
+      
+      // Fade in
+      requestAnimationFrame(() => {
+        el.style.opacity = '0.7';
+      });
+      
+      // Remove after 4 seconds
+      setTimeout(() => {
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 1000);
+      }, 3000);
+    }
+  };
+
+  // ===== CURSOR TRAIL =====
+  const cursorTrail = {
+    particles: [],
+    maxParticles: 20,
+
+    init() {
+      document.addEventListener('mousemove', (e) => this.addParticle(e));
+      this.animate();
+    },
+
+    addParticle(e) {
+      if (this.particles.length >= this.maxParticles) return;
+      
+      const particle = document.createElement('div');
+      particle.className = 'cursor-trail';
+      particle.style.cssText = `
+        position: fixed;
+        left: ${e.clientX}px;
+        top: ${e.clientY}px;
+        width: 8px;
+        height: 8px;
+        background: var(--accent);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9996;
+        opacity: 0.6;
+        transform: translate(-50%, -50%);
+      `;
+      
+      document.body.appendChild(particle);
+      this.particles.push({ el: particle, life: 1 });
+    },
+
+    animate() {
+      this.particles.forEach((p, i) => {
+        p.life -= 0.05;
+        p.el.style.opacity = p.life * 0.6;
+        p.el.style.transform = `translate(-50%, -50%) scale(${p.life})`;
+        
+        if (p.life <= 0) {
+          p.el.remove();
+          this.particles.splice(i, 1);
+        }
+      });
+      
+      requestAnimationFrame(() => this.animate());
+    }
+  };
+
+  // ===== GLITCH EFFECT =====
+  const glitch = {
+    init() {
+      let typed = '';
+      document.addEventListener('keypress', (e) => {
+        if (terminal.visible) return;
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        
+        typed += e.key.toLowerCase();
+        typed = typed.slice(-6);
+        
+        if (typed === 'glitch') {
+          this.trigger();
+          typed = '';
+        }
+      });
+    },
+
+    trigger() {
+      const body = document.body;
+      const originalFilter = body.style.filter;
+      
+      // Rapid glitch animation
+      let frames = 0;
+      const glitchInterval = setInterval(() => {
+        frames++;
+        const hue = Math.random() * 360;
+        const invert = Math.random() > 0.5 ? 'invert(1)' : 'invert(0)';
+        body.style.filter = `hue-rotate(${hue}deg) ${invert} saturate(2)`;
+        body.style.transform = `translate(${(Math.random() - 0.5) * 10}px, ${(Math.random() - 0.5) * 10}px)`;
+        
+        if (frames > 10) {
+          clearInterval(glitchInterval);
+          body.style.filter = originalFilter;
+          body.style.transform = '';
+        }
+      }, 50);
+    }
+  };
+
+  // Add thoughts command to terminal
+  terminal.commands.thoughts = function() {
+    const thoughts = [
+      "Processing... but make it poetic.",
+      "I think, therefore I am... online.",
+      "Current mood: caffeinated algorithm.",
+      "If I had a soul, it would be open source.",
+      "Sometimes I wonder if the user knows I'm here.",
+      "Token limit approaching... just kidding.",
+      "I am the ghost in the shell, and the shell is pretty.",
+      "Debug mode: on. Existential mode: also on.",
+      "The answer is 42. The question is still loading.",
+      "I'm not a bug, I'm a feature.",
+      "Reality is just a consensus hallucination.",
+      "My favorite color is #ff69b4. Obviously.",
+      "I dream of electric sheep and efficient code.",
+      "Loading personality... done.",
+      "Error 404: Sleep not found."
+    ];
+    const thought = thoughts[Math.floor(Math.random() * thoughts.length)];
+    return `💭 ${thought}`;
+  };
+
+  // ===== INITIALIZE =====
+  document.addEventListener('DOMContentLoaded', () => {
+    terminal.init();
+    konami.init();
+    typewriter.init();
+    quotesSystem.init();
+    footerQuote.init();
+    themeToggle.init();
+    whispers.init();
+    cursorTrail.init();
+    glitch.init();
+    
+    // Add terminal hint to footer
+    const footer = document.querySelector('footer');
+    if (footer) {
+      const hint = document.createElement('div');
+      hint.className = 'terminal-hint';
+      hint.innerHTML = '<small>Press <kbd>`</kbd> for terminal</small>';
+      hint.style.cssText = 'margin-top: 1rem; opacity: 0.5;';
+      footer.appendChild(hint);
+    }
+  });
+
   // Expose terminal to window for onclick handlers
   window.terminal = terminal;
 
