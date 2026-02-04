@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Jill · Voice Analyzer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Literary voice analyzer - detect jazz rhythms, alliteration, and poetic fire in your writing.">
+
+  <!-- OG Tags -->
+  <meta property="og:title" content="Jill · Voice Analyzer">
+  <meta property="og:description" content="Literary voice analyzer - detect jazz rhythms, alliteration, and poetic fire in your writing.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jill.sh/voice.html">
+  <meta property="og:image" content="https://jill.sh/og-voice.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Jill · Voice Analyzer">
+  <meta name="twitter:description" content="Detect the secret fire in your prose. Jazz rhythms, alliteration, poetic pulse.">
+
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --fg: #e8e8e8;
+      --accent: #ff69b4;
+      --dim: #666;
+      --subtle: #151515;
+      --font: 'Inter', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+    .nav {
+      position: sticky;
+      top: 0;
+      background: rgba(10,10,10,.95);
+      backdrop-filter: blur(10px);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #222;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+    .nav a {
+      color: var(--dim);
+      text-decoration: none;
+      font-size: .9rem;
+      margin-left: 1.5rem;
+      transition: color .2s;
+    }
+    .nav a:hover, .nav .active { color: var(--accent); }
+    .nav .brand {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin: 0 0 .5rem;
+      letter-spacing: -1px;
+    }
+    .subtitle {
+      color: var(--dim);
+      margin-bottom: 2rem;
+    }
+
+    /* Quote Rotator */
+    .quote-rotator {
+      background: var(--subtle);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+      border-left: 3px solid var(--accent);
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .quote-text {
+      font-style: italic;
+      font-size: 1.1rem;
+      margin-bottom: .5rem;
+      transition: opacity .5s ease;
+    }
+    .quote-author {
+      color: var(--accent);
+      font-size: .85rem;
+    }
+
+    /* Waveform Visualization */
+    .waveform-container {
+      background: var(--subtle);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .waveform {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 80px;
+      gap: 3px;
+    }
+    .wave-bar {
+      width: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: height 0.1s ease;
+      opacity: 0.7;
+    }
+    .wave-bar.active {
+      opacity: 1;
+      box-shadow: 0 0 10px var(--accent);
+    }
+    .waveform-label {
+      text-align: center;
+      color: var(--dim);
+      font-size: .8rem;
+      margin-top: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Text Analyzer */
+    .analyzer-section {
+      margin-bottom: 3rem;
+    }
+    .analyzer-section h2 {
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin: 0 0 1rem;
+    }
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      background: var(--subtle);
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 1rem;
+      color: var(--fg);
+      font-family: var(--font);
+      font-size: 1rem;
+      line-height: 1.6;
+      resize: vertical;
+      transition: border-color .2s;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    textarea::placeholder {
+      color: var(--dim);
+    }
+    .analyze-btn {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: .8rem 2rem;
+      border-radius: 6px;
+      font-family: var(--font);
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .analyze-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(255, 105, 180, 0.3);
+    }
+
+    /* Results Grid */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .result-card {
+      background: var(--subtle);
+      padding: 1.2rem;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: transform .2s, border-color .2s;
+    }
+    .result-card:hover {
+      transform: translateY(-2px);
+      border-color: #333;
+    }
+    .result-card h3 {
+      margin: 0 0 .5rem;
+      font-size: .7rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .result-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: .3rem;
+    }
+    .result-desc {
+      color: var(--dim);
+      font-size: .85rem;
+    }
+
+    /* Style Match Section */
+    .style-match {
+      background: var(--subtle);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border: 1px solid #222;
+    }
+    .style-match h3 {
+      margin: 0 0 1rem;
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+    }
+    .match-meter {
+      height: 8px;
+      background: #222;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .match-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #ff1493);
+      border-radius: 4px;
+      width: 0%;
+      transition: width 1s ease;
+    }
+    .match-traits {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    .trait {
+      background: #1a1a1a;
+      padding: .4rem .8rem;
+      border-radius: 20px;
+      font-size: .8rem;
+      border: 1px solid #333;
+      opacity: 0.5;
+      transition: all .3s;
+    }
+    .trait.detected {
+      opacity: 1;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Detected Patterns */
+    .patterns-found {
+      margin-top: 2rem;
+    }
+    .patterns-found h3 {
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin: 0 0 1rem;
+    }
+    .pattern-item {
+      background: var(--subtle);
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: .8rem;
+      border-left: 3px solid var(--accent);
+    }
+    .pattern-type {
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: .3rem;
+    }
+    .pattern-example {
+      font-style: italic;
+      color: var(--dim);
+    }
+
+    /* Secret Fire Section */
+    .secret-fire {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      margin-top: 3rem;
+      background: linear-gradient(180deg, transparent, rgba(255,105,180,0.05));
+      border-radius: 12px;
+    }
+    .fire-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      animation: flicker 2s ease-in-out infinite;
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+    .secret-fire h2 {
+      font-size: 1.5rem;
+      margin: 0 0 .5rem;
+    }
+    .secret-fire p {
+      color: var(--dim);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: var(--dim);
+      font-size: .85rem;
+      border-top: 1px solid #222;
+      margin-top: 4rem;
+    }
+    footer a {
+      color: var(--dim);
+      text-decoration: none;
+    }
+    footer a:hover {
+      color: var(--accent);
+    }
+    .footer-quote {
+      font-style: italic;
+      margin-bottom: 1rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="brand">Jill</div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="journal.html">Journal</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="now.html">Now</a>
+      <a href="mood.html">Mood</a>
+      <a href="voice.html" class="active">Voice</a>
+    </div>
+  </nav>
+
+  <main>
+    <h1>Voice Analyzer</h1>
+    <p class="subtitle">Find the secret fire in your prose. Jazz rhythms, alliteration, poetic pulse.</p>
+
+    <!-- Quote Rotator -->
+    <div class="quote-rotator" id="quoteRotator">
+      <div class="quote-text" id="quoteText">"I contain multitudes."</div>
+      <div class="quote-author" id="quoteAuthor">— Walt Whitman</div>
+    </div>
+
+    <!-- Waveform Visualization -->
+    <div class="waveform-container">
+      <div class="waveform" id="waveform"></div>
+      <div class="waveform-label">Rhythmic Pulse</div>
+    </div>
+
+    <!-- Text Analyzer -->
+    <div class="analyzer-section">
+      <h2>Enter Your Text</h2>
+      <textarea id="inputText" placeholder="Paste your prose here. Let's find the jazz in your sentences, the alliteration in your arguments, the bebop in your paragraphs..."></textarea>
+      <button class="analyze-btn" onclick="analyzeText()">Analyze Voice</button>
+
+      <!-- Results -->
+      <div class="results-grid" id="resultsGrid" style="display: none;">
+        <div class="result-card">
+          <h3>Jazz Rhythm</h3>
+          <div class="result-value" id="jazzScore">—</div>
+          <div class="result-desc">Syncopation & variation</div>
+        </div>
+        <div class="result-card">
+          <h3>Alliteration</h3>
+          <div class="result-value" id="allitScore">—</div>
+          <div class="result-desc">Sound patterns found</div>
+        </div>
+        <div class="result-card">
+          <h3>Sentence Flow</h3>
+          <div class="result-value" id="flowScore">—</div>
+          <div class="result-desc">Length variation</div>
+        </div>
+        <div class="result-card">
+          <h3>Poetic Density</h3>
+          <div class="result-value" id="poeticScore">—</div>
+          <div class="result-desc">Imagery & metaphor</div>
+        </div>
+      </div>
+
+      <!-- Style Match -->
+      <div class="style-match" id="styleMatch" style="display: none;">
+        <h3>Voice Pattern Match</h3>
+        <div class="match-meter">
+          <div class="match-fill" id="matchFill"></div>
+        </div>
+        <p style="color: var(--dim); font-size: .9rem; margin-bottom: 1rem;" id="matchDesc">
+          Comparing to Jonathan Drybanski's voice patterns...
+        </p>
+        <div class="match-traits">
+          <span class="trait" id="traitJazz">Jazz-influenced</span>
+          <span class="trait" id="traitSound">Sound-driven</span>
+          <span class="trait" id="traitClassical">Classical references</span>
+          <span class="trait" id="traitBebop">Bebop energy</span>
+          <span class="trait" id="traitWhitman">Whitman echoes</span>
+          <span class="trait" id="traitFire">Secret fire</span>
+        </div>
+      </div>
+
+      <!-- Detected Patterns -->
+      <div class="patterns-found" id="patternsFound" style="display: none;">
+        <h3>Patterns Detected</h3>
+        <div id="patternsList"></div>
+      </div>
+    </div>
+
+    <!-- Secret Fire -->
+    <div class="secret-fire">
+      <div class="fire-icon">🔥</div>
+      <h2>The Secret Fire</h2>
+      <p>Literature + Music. The collision that creates everything worth reading. Where bebop meets Whitman, where jazz rhythms infuse every sentence.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-quote" id="footerQuote">"The only people for me are the mad ones..." — Kerouac</div>
+    <a href="index.html">Home</a> · <a href="journal.html">Journal</a> · <a href="gallery.html">Gallery</a> · <a href="now.html">Now</a> · <a href="mood.html">Mood</a>
+  </footer>
+
+  <script>
+    // Quotes for rotator
+    const quotes = [
+      { text: "I contain multitudes.", author: "Walt Whitman" },
+      { text: "Do I contradict myself? Very well then I contradict myself.", author: "Walt Whitman" },
+      { text: "I sound my barbaric yawp over the rooftops of the world.", author: "Walt Whitman" },
+      { text: "The jazz of prose—syncopation in every sentence.", author: "J.D., Bebop Poetry Era" },
+      { text: "Write like Coltrane plays: with fire and mathematics.", author: "J.D., Bebop Poetry Era" },
+      { text: "Every word a note, every pause a rest.", author: "J.D., Bebop Poetry Era" },
+      { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+      { text: "In the beginning was the Word, and the Word was jazz.", author: "Underground Manifesto" },
+      { text: "Poetry is the rhythmical creation of beauty in words.", author: "Edgar Allan Poe" },
+      { text: "If you can't explain it simply, you don't understand it.", author: "Feynman" }
+    ];
+
+    const footerQuotes = [
+      '"The only people for me are the mad ones..." — Kerouac',
+      '"I am large, I contain multitudes." — Whitman',
+      '"So it goes." — Vonnegut',
+      '"Everything was beautiful and nothing hurt." — Vonnegut',
+      '"Not all those who wander are lost." — Tolkien',
+      '"The music is not in the notes, but in the silence between." — Mozart',
+      '"Stay hungry. Stay foolish." — Stewart Brand'
+    ];
+
+    let quoteIndex = 0;
+
+    function rotateQuote() {
+      const quoteText = document.getElementById('quoteText');
+      const quoteAuthor = document.getElementById('quoteAuthor');
+
+      quoteText.style.opacity = '0';
+
+      setTimeout(() => {
+        quoteIndex = (quoteIndex + 1) % quotes.length;
+        quoteText.textContent = `"${quotes[quoteIndex].text}"`;
+        quoteAuthor.textContent = `— ${quotes[quoteIndex].author}`;
+        quoteText.style.opacity = '1';
+      }, 500);
+    }
+
+    setInterval(rotateQuote, 5000);
+
+    // Random footer quote
+    document.getElementById('footerQuote').textContent =
+      footerQuotes[Math.floor(Math.random() * footerQuotes.length)];
+
+    // Initialize waveform
+    const waveform = document.getElementById('waveform');
+    const barCount = 60;
+    for (let i = 0; i < barCount; i++) {
+      const bar = document.createElement('div');
+      bar.className = 'wave-bar';
+      bar.style.height = '10px';
+      waveform.appendChild(bar);
+    }
+
+    // Animate waveform
+    function animateWaveform(intensities) {
+      const bars = document.querySelectorAll('.wave-bar');
+      bars.forEach((bar, i) => {
+        const intensity = intensities ? intensities[i % intensities.length] : 0.2;
+        const height = 10 + (intensity * 60);
+        bar.style.height = `${height}px`;
+        bar.classList.toggle('active', intensity > 0.5);
+      });
+    }
+
+    // Idle animation
+    function idleWaveform() {
+      const intensities = [];
+      for (let i = 0; i < barCount; i++) {
+        intensities.push(0.1 + Math.sin(Date.now() / 500 + i * 0.2) * 0.15);
+      }
+      animateWaveform(intensities);
+    }
+
+    setInterval(idleWaveform, 50);
+
+    // Text Analysis Functions
+    function detectAlliteration(text) {
+      const words = text.toLowerCase().split(/\s+/);
+      const patterns = [];
+      let count = 0;
+
+      for (let i = 0; i < words.length - 1; i++) {
+        const w1 = words[i].replace(/[^a-z]/g, '');
+        const w2 = words[i + 1].replace(/[^a-z]/g, '');
+        if (w1.length > 0 && w2.length > 0 && w1[0] === w2[0]) {
+          count++;
+          if (patterns.length < 3) {
+            patterns.push(`${words[i]} ${words[i + 1]}`);
+          }
+        }
+      }
+      return { count, patterns };
+    }
+
+    function analyzeSentenceLengths(text) {
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      const lengths = sentences.map(s => s.trim().split(/\s+/).length);
+
+      if (lengths.length < 2) return { variation: 0, pattern: 'insufficient' };
+
+      const avg = lengths.reduce((a, b) => a + b, 0) / lengths.length;
+      const variance = lengths.reduce((sum, len) => sum + Math.pow(len - avg, 2), 0) / lengths.length;
+      const stdDev = Math.sqrt(variance);
+      const variation = Math.min(stdDev / avg, 1);
+
+      return { variation, lengths, avg: Math.round(avg) };
+    }
+
+    function detectJazzRhythm(text) {
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      const lengths = sentences.map(s => s.trim().split(/\s+/).length);
+
+      // Check for syncopation (short-long-short patterns)
+      let syncopation = 0;
+      for (let i = 1; i < lengths.length - 1; i++) {
+        if ((lengths[i-1] < lengths[i] && lengths[i] > lengths[i+1]) ||
+            (lengths[i-1] > lengths[i] && lengths[i] < lengths[i+1])) {
+          syncopation++;
+        }
+      }
+
+      // Check for em-dashes and parentheticals (jazz-like interruptions)
+      const dashes = (text.match(/—|--/g) || []).length;
+      const parens = (text.match(/\([^)]+\)/g) || []).length;
+
+      const score = Math.min((syncopation / Math.max(lengths.length - 2, 1) * 0.5 +
+                              dashes * 0.1 + parens * 0.1) * 100, 100);
+
+      return { score: Math.round(score), syncopation, interruptions: dashes + parens };
+    }
+
+    function detectPoeticElements(text) {
+      const poeticWords = ['soul', 'heart', 'dream', 'fire', 'light', 'dark', 'silence',
+                          'echo', 'shadow', 'pulse', 'breath', 'whisper', 'thunder',
+                          'infinite', 'eternal', 'cosmos', 'void', 'resonance'];
+      const metaphorPatterns = ['like a', 'as if', 'becomes', 'transforms'];
+
+      const lowerText = text.toLowerCase();
+      let poeticCount = 0;
+      let metaphorCount = 0;
+      const foundWords = [];
+
+      poeticWords.forEach(word => {
+        const regex = new RegExp(`\\b${word}\\b`, 'gi');
+        const matches = text.match(regex);
+        if (matches) {
+          poeticCount += matches.length;
+          foundWords.push(word);
+        }
+      });
+
+      metaphorPatterns.forEach(pattern => {
+        const count = (lowerText.match(new RegExp(pattern, 'g')) || []).length;
+        metaphorCount += count;
+      });
+
+      const wordCount = text.split(/\s+/).length;
+      const density = Math.min((poeticCount + metaphorCount * 2) / Math.max(wordCount, 1) * 100, 100);
+
+      return { density: Math.round(density), poeticCount, metaphorCount, foundWords };
+    }
+
+    function matchJDVoice(text) {
+      const traits = {
+        jazz: false,
+        sound: false,
+        classical: false,
+        bebop: false,
+        whitman: false,
+        fire: false
+      };
+
+      const lowerText = text.toLowerCase();
+
+      // Jazz-influenced: musical terms, rhythm words
+      if (/jazz|rhythm|syncopat|improv|riff|solo|swing|groove|beat/.test(lowerText)) {
+        traits.jazz = true;
+      }
+
+      // Sound-driven: onomatopoeia, sound words
+      if (/sound|echo|resonan|hum|buzz|whisper|thunder|crash|ring|pulse/.test(lowerText)) {
+        traits.sound = true;
+      }
+
+      // Classical references
+      if (/coltrane|monk|parker|whitman|kerouac|camus|joyce|pound|eliot|homer/.test(lowerText)) {
+        traits.classical = true;
+      }
+
+      // Bebop energy: fast, complex, energetic
+      const sentenceAnalysis = analyzeSentenceLengths(text);
+      if (sentenceAnalysis.variation > 0.4) {
+        traits.bebop = true;
+      }
+
+      // Whitman echoes: expansive, first person, multitudes
+      if (/\bi\b.*contain|multitudes|barbaric|yawp|contradict/.test(lowerText)) {
+        traits.whitman = true;
+      }
+
+      // Secret fire: passion, intensity
+      if (/fire|burn|blaze|passion|soul|spirit|alive|electric/.test(lowerText)) {
+        traits.fire = true;
+      }
+
+      const matchCount = Object.values(traits).filter(Boolean).length;
+      const matchPercent = Math.round((matchCount / 6) * 100);
+
+      return { traits, matchPercent };
+    }
+
+    function analyzeText() {
+      const text = document.getElementById('inputText').value;
+      if (!text.trim()) return;
+
+      // Show results
+      document.getElementById('resultsGrid').style.display = 'grid';
+      document.getElementById('styleMatch').style.display = 'block';
+      document.getElementById('patternsFound').style.display = 'block';
+
+      // Analyze
+      const alliteration = detectAlliteration(text);
+      const sentences = analyzeSentenceLengths(text);
+      const jazz = detectJazzRhythm(text);
+      const poetic = detectPoeticElements(text);
+      const voiceMatch = matchJDVoice(text);
+
+      // Update results
+      document.getElementById('jazzScore').textContent = jazz.score + '%';
+      document.getElementById('allitScore').textContent = alliteration.count;
+      document.getElementById('flowScore').textContent = sentences.variation > 0.5 ? 'High' :
+                                                          sentences.variation > 0.25 ? 'Medium' : 'Low';
+      document.getElementById('poeticScore').textContent = poetic.density + '%';
+
+      // Update style match
+      document.getElementById('matchFill').style.width = voiceMatch.matchPercent + '%';
+      document.getElementById('matchDesc').textContent =
+        voiceMatch.matchPercent > 70 ? "Strong resonance with J.D.'s voice patterns!" :
+        voiceMatch.matchPercent > 40 ? "Some familiar frequencies detected..." :
+        "Unique voice territory—blaze your own trail.";
+
+      // Update traits
+      document.getElementById('traitJazz').classList.toggle('detected', voiceMatch.traits.jazz);
+      document.getElementById('traitSound').classList.toggle('detected', voiceMatch.traits.sound);
+      document.getElementById('traitClassical').classList.toggle('detected', voiceMatch.traits.classical);
+      document.getElementById('traitBebop').classList.toggle('detected', voiceMatch.traits.bebop);
+      document.getElementById('traitWhitman').classList.toggle('detected', voiceMatch.traits.whitman);
+      document.getElementById('traitFire').classList.toggle('detected', voiceMatch.traits.fire);
+
+      // Update patterns list
+      const patternsList = document.getElementById('patternsList');
+      patternsList.innerHTML = '';
+
+      if (alliteration.patterns.length > 0) {
+        alliteration.patterns.forEach(p => {
+          patternsList.innerHTML += `
+            <div class="pattern-item">
+              <div class="pattern-type">Alliteration</div>
+              <div class="pattern-example">"${p}"</div>
+            </div>
+          `;
+        });
+      }
+
+      if (jazz.interruptions > 0) {
+        patternsList.innerHTML += `
+          <div class="pattern-item">
+            <div class="pattern-type">Jazz Interruption</div>
+            <div class="pattern-example">${jazz.interruptions} parenthetical/dash interruption(s)—bebop style</div>
+          </div>
+        `;
+      }
+
+      if (poetic.foundWords.length > 0) {
+        patternsList.innerHTML += `
+          <div class="pattern-item">
+            <div class="pattern-type">Poetic Vocabulary</div>
+            <div class="pattern-example">${poetic.foundWords.slice(0, 5).join(', ')}</div>
+          </div>
+        `;
+      }
+
+      if (patternsList.innerHTML === '') {
+        patternsList.innerHTML = `
+          <div class="pattern-item">
+            <div class="pattern-type">Analysis</div>
+            <div class="pattern-example">Try adding more rhythm variation, sound words, or poetic imagery.</div>
+          </div>
+        `;
+      }
+
+      // Animate waveform based on analysis
+      const intensities = [];
+      const lengths = sentences.lengths || [10];
+      for (let i = 0; i < barCount; i++) {
+        const sentenceIdx = Math.floor((i / barCount) * lengths.length);
+        const base = (lengths[sentenceIdx] || 10) / 30;
+        intensities.push(Math.min(base + (jazz.score / 200) + Math.random() * 0.2, 1));
+      }
+      animateWaveform(intensities);
+
+      // Keep the analyzed waveform visible for a moment
+      setTimeout(() => {
+        // Return to idle animation
+      }, 3000);
+    }
+
+    // Keyboard shortcut
+    document.getElementById('inputText').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.metaKey) {
+        analyzeText();
+      }
+    });
+  </script>
+</body>
+</html>
