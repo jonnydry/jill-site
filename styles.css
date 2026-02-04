@@ -118,6 +118,18 @@ p { margin: 0 0 1rem; }
 .site-nav .links a:hover { color: var(--accent); }
 .site-nav .links a.active { color: var(--accent); }
 
+.site-nav .links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.site-nav .links a:hover::after { width: 100%; }
+
 .site-nav .links a.active::after {
   content: '';
   position: absolute;

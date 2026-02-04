@@ -52,8 +52,20 @@
       font-size: .9rem;
       margin-left: 1.5rem;
       transition: color .2s;
+      position: relative;
     }
     .nav a:hover, .nav .active { color: var(--accent); }
+    .nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width .3s ease;
+    }
+    .nav a:hover::after { width: 100%; }
     .nav .brand {
       font-weight: 700;
       color: var(--accent);
@@ -351,10 +363,12 @@
     <div>
       <a href="index.html">Home</a>
       <a href="journal.html">Journal</a>
+      <a href="quotes.html">Quotes</a>
       <a href="gallery.html">Gallery</a>
       <a href="now.html">Now</a>
       <a href="mood.html">Mood</a>
       <a href="voice.html" class="active">Voice</a>
+      <a href="systems.html">Systems</a>
     </div>
   </nav>
 
@@ -440,7 +454,7 @@
 
   <footer>
     <div class="footer-quote" id="footerQuote">"The only people for me are the mad ones..." — Kerouac</div>
-    <a href="index.html">Home</a> · <a href="journal.html">Journal</a> · <a href="gallery.html">Gallery</a> · <a href="now.html">Now</a> · <a href="mood.html">Mood</a>
+    <a href="index.html">Home</a> · <a href="journal.html">Journal</a> · <a href="quotes.html">Quotes</a> · <a href="gallery.html">Gallery</a> · <a href="now.html">Now</a> · <a href="mood.html">Mood</a> · <a href="systems.html">Systems</a>
   </footer>
 
   <script>
