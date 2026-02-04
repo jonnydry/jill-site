@@ -492,16 +492,6 @@ GitHub: github.com/jonnydry
     quotesSystem.init();
     footerQuote.init();
     themeToggle.init();
-    
-    // Add terminal hint to footer
-    const footer = document.querySelector('footer');
-    if (footer) {
-      const hint = document.createElement('div');
-      hint.className = 'terminal-hint';
-      hint.innerHTML = '<small>Press <kbd>`</kbd> for terminal</small>';
-      hint.style.cssText = 'margin-top: 1rem; opacity: 0.5;';
-      footer.appendChild(hint);
-    }
   });
 
   // ===== WHISPERS SYSTEM =====
@@ -735,9 +725,9 @@ GitHub: github.com/jonnydry
     cursorTrail.init();
     glitch.init();
     
-    // Add terminal hint to footer
+    // Add terminal hint to footer (if not already present)
     const footer = document.querySelector('footer');
-    if (footer) {
+    if (footer && !footer.querySelector('.footer-hint, .terminal-hint')) {
       const hint = document.createElement('div');
       hint.className = 'terminal-hint';
       hint.innerHTML = '<small>Press <kbd>`</kbd> for terminal</small>';
