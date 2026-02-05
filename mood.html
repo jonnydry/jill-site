@@ -459,7 +459,7 @@
       </div>
     </div>
 
-    <!-- Spotify Now Playing (Display Only) -->
+    <!-- Spotify Now Playing (Visual Only) -->
     <div class="spotify-player" id="spotify-player">
       <div class="spotify-artwork" id="artwork-container">
         <span id="spotify-emoji">🎵</span>
@@ -467,36 +467,14 @@
       </div>
       <div class="spotify-info">
         <h2>Now Playing</h2>
-        <div id="spotify-track" class="spotify-track">Phase Dance</div>
-        <div id="spotify-artist" class="spotify-artist">Pat Metheny</div>
+        <div id="spotify-track" class="spotify-track">Pat Metheny</div>
+        <div id="spotify-artist" class="spotify-artist">Phase Dance</div>
         <div class="spotify-progress">
           <div id="progress-bar" class="spotify-progress-bar" style="width: 45%;"></div>
         </div>
-        <div id="spotify-connect-container">
-          <a href="https://accounts.spotify.com/authorize?client_id=cf26eec6b65f463a9832d4c696752c58&response_type=token&redirect_uri=https%3A%2F%2Fjill-site.vercel.app%2Fmood.html&scope=streaming%20user-read-email%20user-read-private%20user-read-playback-state%20user-modify-playback-state&show_dialog=true" 
-             class="spotify-connect" 
-             id="spotify-auth">
-            Connect Spotify
-          </a>
-          <div style="font-size:0.8rem;color:var(--dim);margin-top:0.5rem;">
-            Click to see what Jonny is playing
-          </div>
-        </div>
-        <div class="spotify-controls" id="player-controls" style="display:none;">
-          <button class="spotify-btn" id="prev-btn" title="Previous">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-            </svg>
-          </button>
-          <button class="spotify-btn play-pause" id="play-pause-btn" title="Play/Pause">
-            <svg id="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-            <svg id="pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
-              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-            </svg>
-          </button>
-          <button class="spotify-btn" id="next-btn" title="Next">
+        <div id="spotify-status" style="font-size:0.75rem;color:var(--dim);">Visual mode — updates every 30s</div>
+      </div>
+    </div>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
             </svg>
@@ -615,27 +593,51 @@
           document.getElementById('spotify-device').style.display = 'block';
           document.getElementById('spotify-player').classList.add('is-playing');
           
-          // Try to fetch currently playing
-          fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-            headers: { 'Authorization': 'Bearer ' + token }
-          })
-          .then(r => r.json())
-          .then(data => {
-            if (data && data.item) {
-              document.getElementById('spotify-track').textContent = data.item.name;
-              document.getElementById('spotify-artist').textContent = data.item.artists.map(a => a.name).join(', ');
-              if (data.item.album.images[0]) {
-                document.getElementById('spotify-img').src = data.item.album.images[0].url;
-                document.getElementById('spotify-img').style.display = 'block';
-                document.getElementById('spotify-emoji').style.display = 'none';
-              }
-              const progress = (data.progress_ms / data.item.duration_ms) * 100;
+        // Poll Spotify Now Playing every 30 seconds
+    (function() {
+      async function updateNowPlaying() {
+        try {
+          const response = await fetch('/api/now-playing');
+          if (!response.ok) throw new Error('API error');
+          
+          const data = await response.json();
+          
+          if (data.track) {
+            document.getElementById('spotify-track').textContent = data.track.name;
+            document.getElementById('spotify-artist').textContent = data.track.artist;
+            
+            if (data.track.image) {
+              document.getElementById('spotify-img').src = data.track.image;
+              document.getElementById('spotify-img').style.display = 'block';
+              document.getElementById('spotify-emoji').style.display = 'none';
+            }
+            
+            if (data.track.duration_ms && data.track.progress_ms) {
+              const progress = (data.track.progress_ms / data.track.duration_ms) * 100;
               document.getElementById('progress-bar').style.width = progress + '%';
             }
-          })
-          .catch(err => console.error('Failed to fetch currently playing:', err));
+            
+            if (data.is_playing) {
+              document.getElementById('spotify-player').classList.add('is-playing');
+              document.getElementById('spotify-status').textContent = '● Now Playing';
+              document.getElementById('spotify-status').style.color = '#1DB954';
+            } else {
+              document.getElementById('spotify-player').classList.remove('is-playing');
+              document.getElementById('spotify-status').textContent = 'Paused';
+              document.getElementById('spotify-status').style.color = 'var(--dim)';
+            }
+          }
+        } catch (err) {
+          console.log('Spotify not connected yet:', err.message);
+          document.getElementById('spotify-status').textContent = 'Visual mode — connect in Vercel dashboard';
         }
       }
+      
+      // Initial load
+      updateNowPlaying();
+      
+      // Poll every 30 seconds
+      setInterval(updateNowPlaying, 30000);
     })();
   </script>
 </body>
