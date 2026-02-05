@@ -703,6 +703,118 @@ GitHub: github.com/jonnydry
     return `💭 ${thought}`;
   };
 
+  // ===== VIBE MODE (Press T) =====
+  const vibeMode = {
+    active: false,
+    originalAccent: null,
+    vibes: [
+      { name: 'Neon Pink', accent: '#ff69b4', message: '💗 Vibing in hot pink' },
+      { name: 'Electric Blue', accent: '#00d4ff', message: '💙 Electric dreams' },
+      { name: 'Acid Green', accent: '#39ff14', message: '💚 Acid house vibes' },
+      { name: 'Sunset Orange', accent: '#ff6b35', message: '🧡 Sunset boulevard' },
+      { name: 'Plasma Purple', accent: '#bf00ff', message: '💜 Purple haze' },
+      { name: 'Cyan Wave', accent: '#00ffff', message: '💙 Cyan sea' },
+      { name: 'Gold Rush', accent: '#ffd700', message: '💛 Golden hour' },
+      { name: 'Rose Gold', accent: '#b76e79', message: '🩷 Rose gold dreams' }
+    ],
+
+    init() {
+      document.addEventListener('keydown', (e) => {
+        // T key for vibes (not in inputs, not when terminal is open)
+        if (e.key === 't' || e.key === 'T') {
+          if (this.isTypingInInput()) return;
+          if (window.terminal && window.terminal.visible) return;
+          
+          e.preventDefault();
+          this.triggerVibe();
+        }
+      });
+    },
+
+    isTypingInInput() {
+      const active = document.activeElement;
+      return active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+    },
+
+    triggerVibe() {
+      const vibe = this.vibes[Math.floor(Math.random() * this.vibes.length)];
+      
+      // Show vibe message
+      this.showVibeMessage(vibe.message);
+      
+      // Temporarily change accent color
+      const root = document.documentElement;
+      const currentAccent = getComputedStyle(root).getPropertyValue('--accent').trim();
+      
+      // Store original if not stored
+      if (!this.originalAccent) {
+        this.originalAccent = currentAccent;
+      }
+      
+      // Apply new accent
+      root.style.setProperty('--accent', vibe.accent);
+      
+      // Add vibe animation to body
+      document.body.style.animation = 'vibePulse 0.5s ease';
+      
+      // Reset after 3 seconds
+      setTimeout(() => {
+        root.style.setProperty('--accent', this.originalAccent);
+        document.body.style.animation = '';
+      }, 3000);
+    },
+
+    showVibeMessage(text) {
+      // Remove existing vibe message
+      const existing = document.querySelector('.vibe-message');
+      if (existing) existing.remove();
+      
+      const el = document.createElement('div');
+      el.className = 'vibe-message';
+      el.textContent = text;
+      el.style.cssText = `
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--subtle);
+        color: var(--accent);
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        z-index: 10000;
+        animation: vibeSlide 0.5s ease, vibeFade 2.5s ease 0.5s forwards;
+        border: 2px solid var(--accent);
+        box-shadow: 0 0 30px var(--accent);
+      `;
+      
+      document.body.appendChild(el);
+      
+      setTimeout(() => el.remove(), 3000);
+    }
+  };
+
+  // Add vibe animations to document
+  const vibeStyles = document.createElement('style');
+  vibeStyles.textContent = `
+    @keyframes vibeSlide {
+      from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+      to { transform: translateX(-50%) translateY(0); opacity: 1; }
+    }
+    @keyframes vibeFade {
+      to { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    }
+    @keyframes vibePulse {
+      0%, 100% { filter: saturate(1); }
+      50% { filter: saturate(1.3); }
+    }
+  `;
+  document.head.appendChild(vibeStyles);
+
+  // Initialize vibe mode
+  vibeMode.init();
+
   // ===== INITIALIZE =====
   document.addEventListener('DOMContentLoaded', () => {
     terminal.init();
