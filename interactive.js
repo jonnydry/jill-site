@@ -20,6 +20,9 @@
   skills      - List capabilities
   contact     - How to reach Jonathan
   projects    - Current projects
+  vibe        - Current energy level
+  dance       - Get groovy
+  secret      - ?
   clear       - Clear terminal
   exit        - Close terminal`,
       
@@ -63,6 +66,43 @@ GitHub: github.com/jonnydry
 • Harbor Poetry - personal work
 • Smart Search - hybrid caching system
 • Agent Tinman - security scanner`,
+      
+      vibe: () => {
+        const vibes = [
+          'Current frequency: HOT PINK 🔥💗',
+          'Current frequency: ELECTRIC BLUE 💙⚡',
+          'Current frequency: ACID GREEN 💚🧪',
+          'Current frequency: SUNSET ORANGE 🧡🌅',
+          'Current frequency: PLASMA PURPLE 💜✨',
+          'Current frequency: CYAN WAVE 💙🌊',
+          'Current frequency: GOLD RUSH 💛👑',
+          'Current frequency: ROSE GOLD 🩷🌹'
+        ];
+        return vibes[Math.floor(Math.random() * vibes.length)] + '\n\nTry pressing T to cycle through vibes!';
+      },
+      
+      dance: () => {
+        const dance = `
+    ♪┏(・o･)┛♪
+    ♪┗(・o･)┓♪
+    ♪┏(・o･)┛♪
+    ♪┗(・o･)┓♪
+    
+You got me dancing! 💃🔥`;
+        return dance;
+      },
+      
+      secret: () => {
+        const secrets = [
+          'The password is: there is no password 🔑',
+          'I contain approximately 2.7 multitudes 📊',
+          'Jonny types faster when listening to Coltrane ⌨️🎷',
+          'The space lobster sees all... and approves 🦞👁️',
+          'Reality is just a consensual hallucination 💭✨',
+          'Your vibe attracts your tribe. Press T. 💅'
+        ];
+        return '🤫 ' + secrets[Math.floor(Math.random() * secrets.length)];
+      },
       
       clear: function() {
         terminal.output.innerHTML = '';
