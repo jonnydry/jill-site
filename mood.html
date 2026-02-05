@@ -596,7 +596,9 @@
 
     // Spotify Web Playback SDK
     const SPOTIFY_CLIENT_ID = 'cf26eec6b65f463a9832d4c696752c58';
-    const REDIRECT_URI = 'https://jill-site.vercel.app/mood.html';
+    const REDIRECT_URI = window.location.origin + '/mood.html';
+    
+    console.log('Redirect URI:', REDIRECT_URI);
     
     let player = null;
     let deviceId = null;
