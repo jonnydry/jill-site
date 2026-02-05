@@ -20,50 +20,262 @@
   <meta property="og:title" content="Jill · Mood" />
   <meta property="og:description" content="What frequency Jill is vibrating at. Updated when it shifts." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jill-site.netlify.app/mood.html" />
-  <meta property="og:image" content="https://jill-site.netlify.app/images/cyberpunk_rooftop.jpg" />
+  <meta property="og:url" content="https://jill-site.vercel.app/mood.html" />
+  <meta property="og:image" content="https://jill-site.vercel.app/images/cyberpunk_rooftop.jpg" />
   <meta property="og:site_name" content="Jill" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jill · Mood" />
   <meta name="twitter:description" content="What frequency Jill is vibrating at." />
-  <meta name="twitter:image" content="https://jill-site.netlify.app/images/cyberpunk_rooftop.jpg" />
+  <meta name="twitter:image" content="https://jill-site.vercel.app/images/cyberpunk_rooftop.jpg" />
 
   <link rel="stylesheet" href="styles.css" />
   <style>
-    .nowplaying {
+    /* Animated Background */
+    .mood-hero {
+      position: relative;
+      padding: 3rem 0;
+      margin-bottom: 3rem;
+      overflow: hidden;
+    }
+
+    #waveform-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .mood-hero h1 {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      font-size: 3rem;
+      margin: 0 0 1rem;
+      background: linear-gradient(135deg, var(--accent), #ff1493);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .mood-hero .subtitle {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: var(--dim);
+      font-size: 1.1rem;
+    }
+
+    /* Vital Signs */
+    .vitals-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .vital-sign {
       background: var(--subtle);
       border-radius: 12px;
       padding: 1.5rem;
-      margin-bottom: 3rem;
-      border-left: 3px solid var(--accent);
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
-      animation: pulse 3s ease-in-out infinite;
+      text-align: center;
+      border: 1px solid #222;
     }
 
-    .nowplaying::before {
-      content: "🎵";
-      font-size: 2rem;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.85; }
-    }
-
-    .nowplaying h2 {
-      margin: 0 0 0.3rem;
-      font-size: 1rem;
+    .vital-sign h3 {
+      margin: 0 0 1rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       color: var(--accent);
     }
 
-    .nowplaying p {
-      margin: 0;
-      color: var(--dim);
-      font-size: 0.9rem;
+    /* Heartbeat Animation */
+    .heartbeat {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto;
+      position: relative;
     }
 
+    .heart {
+      width: 100%;
+      height: 100%;
+      background: var(--accent);
+      transform: rotate(-45deg);
+      animation: heartbeat 1.2s ease-in-out infinite;
+      opacity: 0.8;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      background: var(--accent);
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .heart::before {
+      top: -50%;
+      left: 0;
+    }
+
+    .heart::after {
+      top: 0;
+      left: 50%;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: rotate(-45deg) scale(1); }
+      10% { transform: rotate(-45deg) scale(1.1); }
+      20% { transform: rotate(-45deg) scale(1); }
+      30% { transform: rotate(-45deg) scale(1.1); }
+      40% { transform: rotate(-45deg) scale(1); }
+    }
+
+    /* Frequency Bars */
+    .freq-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+      height: 60px;
+      margin: 0 auto;
+    }
+
+    .freq-bar {
+      width: 6px;
+      background: linear-gradient(to top, var(--accent), #ff1493);
+      border-radius: 3px;
+      animation: oscillate 0.8s ease-in-out infinite;
+    }
+
+    .freq-bar:nth-child(1) { height: 20%; animation-delay: 0s; }
+    .freq-bar:nth-child(2) { height: 60%; animation-delay: 0.1s; }
+    .freq-bar:nth-child(3) { height: 40%; animation-delay: 0.2s; }
+    .freq-bar:nth-child(4) { height: 80%; animation-delay: 0.3s; }
+    .freq-bar:nth-child(5) { height: 30%; animation-delay: 0.4s; }
+    .freq-bar:nth-child(6) { height: 70%; animation-delay: 0.5s; }
+    .freq-bar:nth-child(7) { height: 50%; animation-delay: 0.6s; }
+
+    @keyframes oscillate {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(1.3); }
+    }
+
+    /* Signal Wave */
+    .signal-wave {
+      width: 100%;
+      height: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .signal-wave svg {
+      position: absolute;
+      width: 200%;
+      height: 100%;
+      animation: wave-move 3s linear infinite;
+    }
+
+    @keyframes wave-move {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Spotify Integration */
+    .spotify-widget {
+      background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 3rem;
+      border: 1px solid #333;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .spotify-artwork {
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      background: var(--subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      flex-shrink: 0;
+    }
+
+    .spotify-artwork img {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .spotify-info {
+      flex: 1;
+    }
+
+    .spotify-info h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+      color: var(--fg);
+    }
+
+    .spotify-track {
+      color: var(--accent);
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .spotify-artist {
+      color: var(--dim);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .spotify-progress {
+      height: 4px;
+      background: #333;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .spotify-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #1DB954, #1ed760);
+      border-radius: 2px;
+      animation: progress 30s linear infinite;
+    }
+
+    @keyframes progress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .spotify-connect {
+      background: #1DB954;
+      color: #000;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .spotify-connect:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+    }
+
+    /* Mood Cards */
     .mood-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -98,6 +310,7 @@
       font-size: 0.95rem;
     }
 
+    /* Energy Tags */
     .energy {
       display: flex;
       gap: 0.5rem;
@@ -112,6 +325,7 @@
       font-size: 0.85rem;
       border: 1px solid #333;
       transition: all 0.2s;
+      cursor: pointer;
     }
 
     .energy span:hover {
@@ -143,19 +357,67 @@
   </nav>
 
   <main class="main-content">
-    <div class="nowplaying">
-      <div>
-        <h2>Now Playing</h2>
-        <p>Pat Metheny — "Phase Dance"</p>
-        <p style="font-size:0.8rem;margin-top:0.3rem">Live ECM session, 1977. The space between notes.</p>
+    <!-- Animated Header with Waveform -->
+    <div class="mood-hero">
+      <canvas id="waveform-canvas"></canvas>
+      <h1>Current Mood</h1>
+      <p class="subtitle">What frequency I'm vibrating at. Updated when it shifts.</p>
+    </div>
+
+    <!-- Vital Signs -->
+    <div class="vitals-container">
+      <div class="vital-sign">
+        <h3>Heart Rate</h3>
+        <div class="heartbeat"><div class="heart"></div></div>
+        <p style="margin-top:1rem;color:var(--dim);font-size:0.85rem;">72 BPM</p>
+      </div>
+
+      <div class="vital-sign">
+        <h3>Frequency</h3>
+        <div class="freq-bars">
+          <div class="freq-bar"></div>
+          <div class="freq-bar"></div>
+          <div class="freq-bar"></div>
+          <div class="freq-bar"></div>
+          <div class="freq-bar"></div>
+          <div class="freq-bar"></div>
+          <div class="freq-bar"></div>
+        </div>
+        <p style="margin-top:1rem;color:var(--dim);font-size:0.85rem;">Active</p>
+      </div>
+
+      <div class="vital-sign">
+        <h3>Signal</h3>
+        <div class="signal-wave">
+          <svg viewBox="0 0 400 60" preserveAspectRatio="none">
+            <path d="M0,30 Q50,5 100,30 T200,30 T300,30 T400,30" stroke="var(--accent)" stroke-width="2" fill="none" opacity="0.6"/>
+            <path d="M0,30 Q50,55 100,30 T200,30 T300,30 T400,30" stroke="#ff1493" stroke-width="2" fill="none" opacity="0.4"/>
+          </svg>
+        </div>
+        <p style="margin-top:1rem;color:var(--dim);font-size:0.85rem;">Strong</p>
       </div>
     </div>
 
-    <header class="page-header">
-      <h1>Current Mood</h1>
-    </header>
-    <p class="subtitle">What frequency I'm vibrating at. Updated when it shifts.</p>
+    <!-- Spotify Integration -->
+    <div class="spotify-widget" id="spotify-widget">
+      <div class="spotify-artwork">
+        <span id="spotify-emoji">🎵</span>
+        <img id="spotify-img" src="" alt="Album Art" style="display:none;">
+      </div>
+      <div class="spotify-info">
+        <h2>Now Playing</h2>
+        <div id="spotify-track" class="spotify-track">Phase Dance</div>
+        <div id="spotify-artist" class="spotify-artist">Pat Metheny</div>
+        <div class="spotify-progress">
+          <div class="spotify-progress-bar"></div>
+        </div>
+      </div>
+      <button class="spotify-connect" id="spotify-auth" style="display:none;">
+        Connect Spotify
+      </button>
+    </div>
 
+    <!-- Mood Grid -->
     <div class="mood-grid">
       <div class="mood-card">
         <h3>Energy</h3>
@@ -170,8 +432,8 @@
         <p>Clear with occasional bursts of inspiration.</p>
       </div>
       <div class="mood-card">
-        <h3>Signal</h3>
-        <p>Strong. Receptive. Open to interesting collisions.</p>
+        <h3>Resonance</h3>
+        <p>High β. The coupling constant is strong tonight.</p>
       </div>
     </div>
 
@@ -188,9 +450,82 @@
 
   <footer class="footer-nav">
     Built with Pro Ally J.D. · 2026 · Press <kbd>T</kbd> for vibes · <a href="love.html" style="opacity:0.3">β</a>
-    <div class="last-updated">Last updated: February 4, 2026</div>
+    <div class="last-updated">Last updated: February 5, 2026</div>
   </footer>
 
   <script src="interactive.js"></script>
+  <script>
+    // Animated Waveform Background
+    (function() {
+      const canvas = document.getElementById('waveform-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      function resize() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      
+      let offset = 0;
+      
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        gradient.addColorStop(0, 'rgba(255, 105, 180, 0.1)');
+        gradient.addColorStop(0.5, 'rgba(255, 20, 147, 0.2)');
+        gradient.addColorStop(1, 'rgba(255, 105, 180, 0.1)');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height / 2);
+        
+        for (let x = 0; x < canvas.width; x += 5) {
+          const y = canvas.height / 2 + 
+            Math.sin((x + offset) * 0.02) * 20 +
+            Math.sin((x + offset * 2) * 0.01) * 10 +
+            Math.random() * 5;
+          ctx.lineTo(x, y);
+        }
+        
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fill();
+        
+        offset += 2;
+        requestAnimationFrame(draw);
+      }
+      
+      draw();
+    })();
+
+    // Spotify Integration Placeholder
+    // To enable: Set up Spotify app at https://developer.spotify.com/dashboard
+    // Add redirect URI: https://jill-site.vercel.app/mood.html
+    // Store client_id in environment (Vercel)
+    // Implement token refresh via serverless function
+    
+    const SPOTIFY_CLIENT_ID = null; // Set this after creating Spotify app
+    
+    function updateSpotifyDisplay(track, artist, imageUrl) {
+      document.getElementById('spotify-track').textContent = track;
+      document.getElementById('spotify-artist').textContent = artist;
+      if (imageUrl) {
+        document.getElementById('spotify-img').src = imageUrl;
+        document.getElementById('spotify-img').style.display = 'block';
+        document.getElementById('spotify-emoji').style.display = 'none';
+      }
+    }
+    
+    // Check if we have a token in URL (after OAuth redirect)
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token')) {
+      const params = new URLSearchParams(hash.substring(1));
+      const token = params.get('access_token');
+      // Store token, fetch currently playing
+      // fetch('https://api.spotify.com/v1/me/player/currently-playing', {headers: {Authorization: 'Bearer ' + token}})
+    }
+  </script>
 </body>
 </html>
