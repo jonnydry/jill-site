@@ -705,8 +705,7 @@ GitHub: github.com/jonnydry
 
   // ===== VIBE MODE (Press T) =====
   const vibeMode = {
-    active: false,
-    originalAccent: null,
+    currentIndex: 0,
     vibes: [
       { name: 'Neon Pink', accent: '#ff69b4', message: '💗 Vibing in hot pink' },
       { name: 'Electric Blue', accent: '#00d4ff', message: '💙 Electric dreams' },
@@ -726,7 +725,7 @@ GitHub: github.com/jonnydry
           if (window.terminal && window.terminal.visible) return;
           
           e.preventDefault();
-          this.triggerVibe();
+          this.cycleVibe();
         }
       });
     },
@@ -736,32 +735,27 @@ GitHub: github.com/jonnydry
       return active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
     },
 
-    triggerVibe() {
-      const vibe = this.vibes[Math.floor(Math.random() * this.vibes.length)];
+    cycleVibe() {
+      // Move to next vibe (cycles through all 8)
+      this.currentIndex = (this.currentIndex + 1) % this.vibes.length;
+      const vibe = this.vibes[this.currentIndex];
       
       // Show vibe message
       this.showVibeMessage(vibe.message);
       
-      // Temporarily change accent color
+      // Change accent color (sticks until next T press)
       const root = document.documentElement;
-      const currentAccent = getComputedStyle(root).getPropertyValue('--accent').trim();
-      
-      // Store original if not stored
-      if (!this.originalAccent) {
-        this.originalAccent = currentAccent;
-      }
-      
-      // Apply new accent
       root.style.setProperty('--accent', vibe.accent);
       
-      // Add vibe animation to body
+      // Brief pulse animation
       document.body.style.animation = 'vibePulse 0.5s ease';
-      
-      // Reset after 3 seconds
       setTimeout(() => {
-        root.style.setProperty('--accent', this.originalAccent);
         document.body.style.animation = '';
-      }, 3000);
+      }, 500);
+      
+      // Save to localStorage so it persists across pages
+      localStorage.setItem('jill-vibe-accent', vibe.accent);
+      localStorage.setItem('jill-vibe-index', this.currentIndex);
     },
 
     showVibeMessage(text) {
@@ -792,6 +786,17 @@ GitHub: github.com/jonnydry
       document.body.appendChild(el);
       
       setTimeout(() => el.remove(), 3000);
+    },
+
+    // Restore saved vibe on page load
+    restoreVibe() {
+      const savedAccent = localStorage.getItem('jill-vibe-accent');
+      const savedIndex = localStorage.getItem('jill-vibe-index');
+      
+      if (savedAccent && savedIndex !== null) {
+        this.currentIndex = parseInt(savedIndex, 10);
+        document.documentElement.style.setProperty('--accent', savedAccent);
+      }
     }
   };
 
@@ -826,6 +831,7 @@ GitHub: github.com/jonnydry
     whispers.init();
     cursorTrail.init();
     glitch.init();
+    vibeMode.restoreVibe(); // Restore saved vibe color
     
     // Add terminal hint to footer (if not already present)
     const footer = document.querySelector('footer');
