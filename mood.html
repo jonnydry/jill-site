@@ -28,6 +28,9 @@
   <meta name="twitter:description" content="What frequency Jill is vibrating at." />
   <meta name="twitter:image" content="https://jill-site.vercel.app/images/cyberpunk_rooftop.jpg" />
 
+  <!-- Spotify Web Playback SDK -->
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* Animated Background */
@@ -187,8 +190,8 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* Spotify Integration */
-    .spotify-widget {
+    /* Spotify Player */
+    .spotify-player {
       background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
       border-radius: 12px;
       padding: 1.5rem;
@@ -209,35 +212,45 @@
       justify-content: center;
       font-size: 3rem;
       flex-shrink: 0;
+      overflow: hidden;
     }
 
     .spotify-artwork img {
       width: 100%;
       height: 100%;
-      border-radius: 8px;
       object-fit: cover;
     }
 
     .spotify-info {
       flex: 1;
+      min-width: 0;
     }
 
     .spotify-info h2 {
       margin: 0 0 0.5rem;
-      font-size: 1.1rem;
-      color: var(--fg);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--dim);
     }
 
     .spotify-track {
-      color: var(--accent);
-      font-size: 1rem;
+      color: var(--fg);
+      font-size: 1.1rem;
+      font-weight: 600;
       margin-bottom: 0.3rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .spotify-artist {
       color: var(--dim);
       font-size: 0.9rem;
       margin-bottom: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .spotify-progress {
@@ -245,18 +258,51 @@
       background: #333;
       border-radius: 2px;
       overflow: hidden;
+      margin-bottom: 1rem;
     }
 
     .spotify-progress-bar {
       height: 100%;
       background: linear-gradient(90deg, #1DB954, #1ed760);
       border-radius: 2px;
-      animation: progress 30s linear infinite;
+      width: 0%;
+      transition: width 0.5s ease;
     }
 
-    @keyframes progress {
-      0% { width: 0%; }
-      100% { width: 100%; }
+    .spotify-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .spotify-btn {
+      background: transparent;
+      border: none;
+      color: var(--fg);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spotify-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+    }
+
+    .spotify-btn.play-pause {
+      width: 48px;
+      height: 48px;
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .spotify-btn.play-pause:hover {
+      background: #ff1493;
+      transform: scale(1.05);
     }
 
     .spotify-connect {
@@ -273,6 +319,12 @@
     .spotify-connect:hover {
       transform: scale(1.05);
       box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+    }
+
+    .spotify-device {
+      font-size: 0.75rem;
+      color: #1DB954;
+      margin-top: 0.5rem;
     }
 
     /* Mood Cards */
@@ -332,6 +384,16 @@
       background: var(--accent);
       color: var(--bg);
       border-color: var(--accent);
+    }
+
+    /* Playing state animation */
+    .spotify-player.is-playing .spotify-artwork {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.4); }
+      50% { box-shadow: 0 0 20px 5px rgba(29, 185, 84, 0.2); }
     }
   </style>
 </head>
@@ -398,21 +460,42 @@
       </div>
     </div>
 
-    <!-- Spotify Integration -->
-    <div class="spotify-widget" id="spotify-widget">
-      <div class="spotify-artwork">
+    <!-- Spotify Web Player -->
+    <div class="spotify-player" id="spotify-player">
+      <div class="spotify-artwork" id="artwork-container">
         <span id="spotify-emoji">🎵</span>
         <img id="spotify-img" src="" alt="Album Art" style="display:none;">
       </div>
       <div class="spotify-info">
         <h2>Now Playing</h2>
-        <div id="spotify-track" class="spotify-track">Phase Dance</div>
-        <div id="spotify-artist" class="spotify-artist">Pat Metheny</div>
+        <div id="spotify-track" class="spotify-track">Ready to Connect</div>
+        <div id="spotify-artist" class="spotify-artist">Spotify Premium required</div>
         <div class="spotify-progress">
-          <div class="spotify-progress-bar"></div>
+          <div id="progress-bar" class="spotify-progress-bar"></div>
         </div>
+        <div class="spotify-controls" id="player-controls" style="display:none;">
+          <button class="spotify-btn" id="prev-btn" title="Previous">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+            </svg>
+          </button>
+          <button class="spotify-btn play-pause" id="play-pause-btn" title="Play/Pause">
+            <svg id="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <svg id="pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+          </button>
+          <button class="spotify-btn" id="next-btn" title="Next">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+            </svg>
+          </button>
+        </div>
+        <div id="spotify-device" class="spotify-device" style="display:none;">Connected to Jill Site Player</div>
       </div>
-      <button class="spotify-connect" id="spotify-auth" style="display:none;">
+      <button class="spotify-connect" id="spotify-auth">
         Connect Spotify
       </button>
     </div>
@@ -500,31 +583,144 @@
       draw();
     })();
 
-    // Spotify Integration Placeholder
-    // To enable: Set up Spotify app at https://developer.spotify.com/dashboard
-    // Add redirect URI: https://jill-site.vercel.app/mood.html
-    // Store client_id in environment (Vercel)
-    // Implement token refresh via serverless function
+    // Spotify Web Playback SDK
+    const SPOTIFY_CLIENT_ID = 'cf26eec6b65f463a9832d4c696752c58';
+    const REDIRECT_URI = 'https://jill-site.vercel.app/mood.html';
     
-    const SPOTIFY_CLIENT_ID = 'cf26eec6b65f463a9832d4c696752c58'; // Set this after creating Spotify app
+    let player = null;
+    let deviceId = null;
+    let isPlaying = false;
+    let currentTrack = null;
     
-    function updateSpotifyDisplay(track, artist, imageUrl) {
-      document.getElementById('spotify-track').textContent = track;
-      document.getElementById('spotify-artist').textContent = artist;
-      if (imageUrl) {
-        document.getElementById('spotify-img').src = imageUrl;
-        document.getElementById('spotify-img').style.display = 'block';
-        document.getElementById('spotify-emoji').style.display = 'none';
+    // Check for token in URL hash (after OAuth redirect)
+    function getTokenFromUrl() {
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      return params.get('access_token');
+    }
+    
+    // Check for token in localStorage
+    function getStoredToken() {
+      return localStorage.getItem('spotify_token');
+    }
+    
+    // Store token
+    function storeToken(token) {
+      localStorage.setItem('spotify_token', token);
+      // Clear URL hash
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
+    // Initiate OAuth flow
+    document.getElementById('spotify-auth').addEventListener('click', function() {
+      const scopes = 'streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state';
+      const authUrl = `https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(scopes)}`;
+      window.location.href = authUrl;
+    });
+    
+    // Initialize Spotify Player
+    function initSpotifyPlayer(token) {
+      document.getElementById('spotify-auth').style.display = 'none';
+      document.getElementById('player-controls').style.display = 'flex';
+      document.getElementById('spotify-device').style.display = 'block';
+      
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        player = new Spotify.Player({
+          name: 'Jill Site Player',
+          getOAuthToken: cb => { cb(token); },
+          volume: 0.5
+        });
+        
+        // Ready
+        player.addListener('ready', ({ device_id }) => {
+          console.log('Ready with Device ID', device_id);
+          deviceId = device_id;
+          document.getElementById('spotify-device').textContent = 'Connected to Jill Site Player';
+        });
+        
+        // Not Ready
+        player.addListener('not_ready', ({ device_id }) => {
+          console.log('Device ID has gone offline', device_id);
+          document.getElementById('spotify-device').textContent = 'Player offline';
+        });
+        
+        // Player state changed
+        player.addListener('player_state_changed', state => {
+          if (!state) return;
+          
+          isPlaying = !state.paused;
+          currentTrack = state.track_window.current_track;
+          
+          updatePlayerUI(state);
+        });
+        
+        // Connect
+        player.connect();
+      };
+      
+      // Load SDK if not already loaded
+      if (!window.Spotify) {
+        const script = document.createElement('script');
+        script.src = 'https://sdk.scdn.co/spotify-player.js';
+        script.async = true;
+        document.body.appendChild(script);
+      } else {
+        window.onSpotifyWebPlaybackSDKReady();
       }
     }
     
-    // Check if we have a token in URL (after OAuth redirect)
-    const hash = window.location.hash;
-    if (hash && hash.includes('access_token')) {
-      const params = new URLSearchParams(hash.substring(1));
-      const token = params.get('access_token');
-      // Store token, fetch currently playing
-      // fetch('https://api.spotify.com/v1/me/player/currently-playing', {headers: {Authorization: 'Bearer ' + token}})
+    // Update UI based on player state
+    function updatePlayerUI(state) {
+      const track = state.track_window.current_track;
+      
+      if (track) {
+        document.getElementById('spotify-track').textContent = track.name;
+        document.getElementById('spotify-artist').textContent = track.artists.map(a => a.name).join(', ');
+        
+        if (track.album.images[0]) {
+          document.getElementById('spotify-img').src = track.album.images[0].url;
+          document.getElementById('spotify-img').style.display = 'block';
+          document.getElementById('spotify-emoji').style.display = 'none';
+        }
+        
+        // Update progress
+        const progress = (state.position / state.duration) * 100;
+        document.getElementById('progress-bar').style.width = progress + '%';
+        
+        // Update play/pause icon
+        if (isPlaying) {
+          document.getElementById('play-icon').style.display = 'none';
+          document.getElementById('pause-icon').style.display = 'block';
+          document.getElementById('spotify-player').classList.add('is-playing');
+        } else {
+          document.getElementById('play-icon').style.display = 'block';
+          document.getElementById('pause-icon').style.display = 'none';
+          document.getElementById('spotify-player').classList.remove('is-playing');
+        }
+      }
+    }
+    
+    // Control buttons
+    document.getElementById('play-pause-btn').addEventListener('click', async () => {
+      if (!player) return;
+      await player.togglePlay();
+    });
+    
+    document.getElementById('prev-btn').addEventListener('click', async () => {
+      if (!player) return;
+      await player.previousTrack();
+    });
+    
+    document.getElementById('next-btn').addEventListener('click', async () => {
+      if (!player) return;
+      await player.nextTrack();
+    });
+    
+    // Initialize on load
+    const token = getTokenFromUrl() || getStoredToken();
+    if (token) {
+      storeToken(token);
+      initSpotifyPlayer(token);
     }
   </script>
 </body>
