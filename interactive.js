@@ -484,16 +484,6 @@ GitHub: github.com/jonnydry
     }
   };
 
-  // ===== INITIALIZE =====
-  document.addEventListener('DOMContentLoaded', () => {
-    terminal.init();
-    konami.init();
-    typewriter.init();
-    quotesSystem.init();
-    footerQuote.init();
-    themeToggle.init();
-  });
-
   // ===== WHISPERS SYSTEM =====
   // Hold Shift to reveal Jill's hidden inner thoughts
   const whispers = {
