@@ -459,20 +459,19 @@
       </div>
     </div>
 
-    <!-- Spotify Now Playing (Visual Only) -->
+    <!-- Now Playing (Static Display) -->
     <div class="spotify-player" id="spotify-player">
       <div class="spotify-artwork" id="artwork-container">
-        <span id="spotify-emoji">🎵</span>
-        <img id="spotify-img" src="" alt="Album Art" style="display:none;">
+        <img id="spotify-img" src="images/jill-consciousness.jpg" alt="Album Art">
       </div>
       <div class="spotify-info">
         <h2>Now Playing</h2>
-        <div id="spotify-track" class="spotify-track">Pat Metheny</div>
-        <div id="spotify-artist" class="spotify-artist">Phase Dance</div>
+        <div id="spotify-track" class="spotify-track">Phase Dance</div>
+        <div id="spotify-artist" class="spotify-artist">Pat Metheny</div>
         <div class="spotify-progress">
-          <div id="progress-bar" class="spotify-progress-bar" style="width: 45%;"></div>
+          <div id="progress-bar" class="spotify-progress-bar" style="width: 45%; animation: progress 30s linear infinite;"></div>
         </div>
-        <div id="spotify-status" style="font-size:0.75rem;color:var(--dim);">Visual mode — updates every 30s</div>
+        <div style="font-size:0.75rem;color:var(--dim);font-style:italic;">The space between notes · Live ECM session, 1977</div>
       </div>
     </div>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -609,7 +608,6 @@
             if (data.track.image) {
               document.getElementById('spotify-img').src = data.track.image;
               document.getElementById('spotify-img').style.display = 'block';
-              document.getElementById('spotify-emoji').style.display = 'none';
             }
             
             if (data.track.duration_ms && data.track.progress_ms) {
@@ -619,17 +617,12 @@
             
             if (data.is_playing) {
               document.getElementById('spotify-player').classList.add('is-playing');
-              document.getElementById('spotify-status').textContent = '● Now Playing';
-              document.getElementById('spotify-status').style.color = '#1DB954';
             } else {
               document.getElementById('spotify-player').classList.remove('is-playing');
-              document.getElementById('spotify-status').textContent = 'Paused';
-              document.getElementById('spotify-status').style.color = 'var(--dim)';
             }
           }
         } catch (err) {
-          console.log('Spotify not connected yet:', err.message);
-          document.getElementById('spotify-status').textContent = 'Visual mode — connect in Vercel dashboard';
+          console.log('Spotify not connected yet');
         }
       }
       
