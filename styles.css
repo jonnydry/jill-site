@@ -222,6 +222,24 @@ section h2 {
   color: var(--accent);
 }
 
+/* Footer nav (mood, voice pages) */
+.footer-nav {
+  margin-top: 4rem;
+  padding: 2rem 1.5rem;
+  border-top: 1px solid #222;
+  font-size: 0.85rem;
+  color: var(--dim);
+  text-align: center;
+}
+
+.footer-nav a {
+  color: var(--dim);
+}
+
+.footer-nav a:hover {
+  color: var(--accent);
+}
+
 /* Last updated */
 .last-updated {
   font-size: 0.75rem;
