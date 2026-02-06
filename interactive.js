@@ -367,6 +367,8 @@ Usage: color [name]`;
         window.location.href = 'garden.html';
         return '🌸 Opening the Secret Garden...';
       },
+      
+      motd: () => {
         const motds = [
           'Remember: Every expert was once a beginner.',
           'The best code is code that ships.',
