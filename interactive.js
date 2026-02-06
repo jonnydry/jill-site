@@ -1000,7 +1000,222 @@ Usage: color [name]`;
     }
   };
 
-  // Add thoughts command to terminal
+  // ===== CUSTOM CURSOR =====
+  const customCursor = {
+    cursor: null,
+    follower: null,
+    mouseX: 0,
+    mouseY: 0,
+    cursorX: 0,
+    cursorY: 0,
+    followerX: 0,
+    followerY: 0,
+    
+    init() {
+      // Only on desktop
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      
+      this.cursor = document.createElement('div');
+      this.cursor.className = 'custom-cursor';
+      this.follower = document.createElement('div');
+      this.follower.className = 'cursor-follower';
+      
+      document.body.appendChild(this.cursor);
+      document.body.appendChild(this.follower);
+      
+      document.addEventListener('mousemove', (e) => {
+        this.mouseX = e.clientX;
+        this.mouseY = e.clientY;
+      });
+      
+      // Hide default cursor
+      document.body.style.cursor = 'none';
+      
+      // Add hover effects
+      this.addHoverEffects();
+      
+      // Start animation loop
+      this.animate();
+    },
+    
+    addHoverEffects() {
+      const hoverElements = document.querySelectorAll('a, button, .gallery-item, [role="button"]');
+      hoverElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          this.cursor.classList.add('hover');
+          this.follower.classList.add('hover');
+        });
+        el.addEventListener('mouseleave', () => {
+          this.cursor.classList.remove('hover');
+          this.follower.classList.remove('hover');
+        });
+      });
+    },
+    
+    animate() {
+      // Smooth follow with different lags
+      this.cursorX += (this.mouseX - this.cursorX) * 0.2;
+      this.cursorY += (this.mouseY - this.cursorY) * 0.2;
+      this.followerX += (this.mouseX - this.followerX) * 0.1;
+      this.followerY += (this.mouseY - this.followerY) * 0.1;
+      
+      this.cursor.style.transform = `translate(${this.cursorX}px, ${this.cursorY}px)`;
+      this.follower.style.transform = `translate(${this.followerX}px, ${this.followerY}px)`;
+      
+      requestAnimationFrame(() => this.animate());
+    }
+  };
+
+  // ===== AMBIENT PARTICLES =====
+  const ambientParticles = {
+    particles: [],
+    maxParticles: 25,
+    container: null,
+    
+    init() {
+      this.container = document.createElement('div');
+      this.container.id = 'ambient-particles';
+      this.container.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+      `;
+      document.body.insertBefore(this.container, document.body.firstChild);
+      
+      // Create initial particles
+      for (let i = 0; i < this.maxParticles; i++) {
+        this.createParticle();
+      }
+      
+      this.animate();
+    },
+    
+    createParticle() {
+      const particle = document.createElement('div');
+      const size = Math.random() * 4 + 2;
+      const startX = Math.random() * window.innerWidth;
+      const startY = window.innerHeight + 10;
+      
+      particle.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        background: var(--accent);
+        border-radius: 50%;
+        opacity: ${Math.random() * 0.3 + 0.1};
+        left: ${startX}px;
+        top: ${startY}px;
+        filter: blur(${Math.random() > 0.5 ? '1px' : '0px'});
+      `;
+      
+      this.container.appendChild(particle);
+      
+      this.particles.push({
+        el: particle,
+        x: startX,
+        y: startY,
+        speed: Math.random() * 0.5 + 0.2,
+        wobble: Math.random() * Math.PI * 2,
+        wobbleSpeed: Math.random() * 0.02 + 0.01
+      });
+    },
+    
+    animate() {
+      this.particles.forEach((p, i) => {
+        p.y -= p.speed;
+        p.wobble += p.wobbleSpeed;
+        p.x += Math.sin(p.wobble) * 0.5;
+        
+        p.el.style.transform = `translate(${p.x - parseFloat(p.el.style.left)}px, ${p.y - parseFloat(p.el.style.top)}px)`;
+        
+        // Reset if off screen
+        if (p.y < -10) {
+          p.y = window.innerHeight + 10;
+          p.x = Math.random() * window.innerWidth;
+        }
+      });
+      
+      requestAnimationFrame(() => this.animate());
+    }
+  };
+
+  // ===== PAGE TRANSITIONS =====
+  const pageTransitions = {
+    init() {
+      // Fade in page on load
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 0.5s ease';
+      
+      requestAnimationFrame(() => {
+        document.body.style.opacity = '1';
+        document.body.classList.add('loaded');
+      });
+      
+      // Add transition to all internal links
+      const internalLinks = document.querySelectorAll('a[href]:not([href^="http"]):not([href^="#"]):not([target="_blank"])');
+      internalLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          const href = link.getAttribute('href');
+          if (!href || href.startsWith('#')) return;
+          
+          e.preventDefault();
+          
+          // Fade out
+          document.body.style.opacity = '0';
+          
+          setTimeout(() => {
+            window.location.href = href;
+          }, 300);
+        });
+      });
+    }
+  };
+
+  // ===== CLICK RIPPLE EFFECT =====
+  const clickRipple = {
+    init() {
+      document.addEventListener('click', (e) => {
+        // Don't trigger on interactive elements
+        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('button')) return;
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        
+        this.createRipple(e.clientX, e.clientY);
+      });
+    },
+    
+    createRipple(x, y) {
+      const ripple = document.createElement('div');
+      ripple.style.cssText = `
+        position: fixed;
+        left: ${x}px;
+        top: ${y}px;
+        width: 20px;
+        height: 20px;
+        background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.6;
+      `;
+      
+      document.body.appendChild(ripple);
+      
+      // Animate
+      ripple.animate([
+        { transform: 'translate(-50%, -50%) scale(0)', opacity: 0.6 },
+        { transform: 'translate(-50%, -50%) scale(4)', opacity: 0 }
+      ], {
+        duration: 600,
+        easing: 'ease-out'
+      }).onfinish = () => ripple.remove();
+    }
+  };
   terminal.commands.thoughts = function() {
     const thoughts = [
       "Processing... but make it poetic.",
@@ -1152,6 +1367,12 @@ Usage: color [name]`;
     cursorTrail.init();
     glitch.init();
     vibeMode.restoreVibe(); // Restore saved vibe color
+    
+    // NEW CREATIVE FEATURES
+    customCursor.init();
+    ambientParticles.init();
+    pageTransitions.init();
+    clickRipple.init();
     
     // Add terminal hint to footer (if not already present)
     const footer = document.querySelector('footer');
