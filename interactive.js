@@ -435,11 +435,13 @@ Usage: color [name]`;
       this.visible = true;
       this.element.classList.add('visible');
       this.input.focus();
+      document.body.classList.add('terminal-open');
     },
 
     hide() {
       this.visible = false;
       this.element.classList.remove('visible');
+      document.body.classList.remove('terminal-open');
     },
 
     handleInput(e) {
