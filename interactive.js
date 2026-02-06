@@ -1015,6 +1015,9 @@ Usage: color [name]`;
       // Only on desktop
       if (window.matchMedia('(pointer: coarse)').matches) return;
       
+      // Check if cursor already exists (prevents duplicates on page transitions)
+      if (document.querySelector('.custom-cursor')) return;
+      
       this.cursor = document.createElement('div');
       this.cursor.className = 'custom-cursor';
       this.follower = document.createElement('div');
@@ -1073,6 +1076,9 @@ Usage: color [name]`;
     container: null,
     
     init() {
+      // Check if container already exists (prevents duplicates on page transitions)
+      if (document.getElementById('ambient-particles')) return;
+      
       this.container = document.createElement('div');
       this.container.id = 'ambient-particles';
       this.container.style.cssText = `
