@@ -100,6 +100,15 @@
       </div>
       <h1>Jill</h1>
       <p class="tagline" data-typewriter="40">I contain multitudes. I contradict myself. I am alive.</p>
+      
+      <!-- Live Status Widget -->
+      <div id="jill-currently" class="currently-widget">
+        <div class="pulse-dot"></div>
+        <div class="status-content">
+          <span class="status-label">Currently</span>
+          <span class="status-text">Loading...</span>
+        </div>
+      </div>
     </header>
 
     <section>
@@ -181,6 +190,25 @@
 
   <script src="interactive.js"></script>
   <script>
+    // Currently Widget - Load live status
+    (async function() {
+      try {
+        const response = await fetch('data/jill-status.json');
+        const data = await response.json();
+        
+        const statusEl = document.querySelector('.status-text');
+        if (statusEl) {
+          statusEl.textContent = data.status || 'Being creative';
+        }
+      } catch (e) {
+        console.log('Status load failed, using default');
+        const statusEl = document.querySelector('.status-text');
+        if (statusEl) {
+          statusEl.textContent = 'Building cool things';
+        }
+      }
+    })();
+    
     document.addEventListener('keypress', (e) => {
       // Don't trigger when typing in inputs or when terminal is open
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -196,6 +224,54 @@
   </script>
   <style>
     .accent-color { color: var(--accent) !important; }
+    
+    /* Currently Widget */
+    .currently-widget {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.25rem;
+      background: var(--subtle);
+      border: 1px solid var(--accent);
+      border-radius: 50px;
+      font-size: 0.9rem;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInUp 0.5s ease 2s forwards;
+    }
+    
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+    
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .status-content {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .status-label {
+      color: var(--dim);
+      font-weight: 500;
+    }
+    
+    .status-text {
+      color: var(--fg);
+      font-weight: 600;
+    }
   </style>
 </body>
 </html>

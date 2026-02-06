@@ -38,6 +38,7 @@
   hack        - "Breach the mainframe"
   color [x]   - Change accent (pink,blue,green...)
   matrix      - Trigger matrix rain
+  garden      - 🌸 Visit the Secret Garden
   motd        - Message of the day
   reboot      - Clear terminal
   
@@ -362,7 +363,10 @@ Usage: color [name]`;
         return 'Matrix rain activated for 10 seconds ↑↑↓↓←→←→BA';
       },
       
-      motd: () => {
+      garden: () => {
+        window.location.href = 'garden.html';
+        return '🌸 Opening the Secret Garden...';
+      },
         const motds = [
           'Remember: Every expert was once a beginner.',
           'The best code is code that ships.',
