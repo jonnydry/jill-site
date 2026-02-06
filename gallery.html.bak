@@ -237,7 +237,6 @@
         </div>
       </div>
 
-
       <div class="gallery-item" data-index="1" tabindex="0" role="button" aria-label="View Albert Camus portrait">
         <img src="images/imag3nigma-camus-final.jpg" alt="Albert Camus portrait" loading="lazy">
         <div class="caption">
@@ -254,7 +253,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="3" tabindex="0" role="button" aria-label="View Walt Whitman portrait">
+      <div class="gallery-item" data-index="2" tabindex="0" role="button" aria-label="View Walt Whitman portrait">
         <img src="images/imag3nigma_whitman_open_road.jpg" alt="Walt Whitman open road" loading="lazy">
         <div class="caption">
           <h3>Walt Whitman</h3>
@@ -262,7 +261,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="4" tabindex="0" role="button" aria-label="View Neon Rooftop image">
+      <div class="gallery-item" data-index="3" tabindex="0" role="button" aria-label="View Neon Rooftop image">
         <img src="images/cyberpunk_rooftop.jpg" alt="Cyberpunk rooftop scene" loading="lazy">
         <div class="caption">
           <h3>Neon Rooftop</h3>
@@ -270,7 +269,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="5" tabindex="0" role="button" aria-label="View Coastal Highway image">
+      <div class="gallery-item" data-index="4" tabindex="0" role="button" aria-label="View Coastal Highway image">
         <img src="images/highway_sunset.jpg" alt="Highway at sunset" loading="lazy">
         <div class="caption">
           <h3>Coastal Highway</h3>
@@ -278,7 +277,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="6" tabindex="0" role="button" aria-label="View Deep Blue image">
+      <div class="gallery-item" data-index="5" tabindex="0" role="button" aria-label="View Deep Blue image">
         <img src="images/underwater_twilight.jpg" alt="Underwater twilight scene" loading="lazy">
         <div class="caption">
           <h3>Deep Blue</h3>
@@ -286,7 +285,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="7" tabindex="0" role="button" aria-label="View Jill Avatar Anime">
+      <div class="gallery-item" data-index="6" tabindex="0" role="button" aria-label="View Jill Avatar Anime">
         <img src="images/jill-avatar-anime.jpg" alt="Jill avatar anime style" loading="lazy">
         <div class="caption">
           <h3>Jill · Anime Evolved</h3>
@@ -294,7 +293,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="8" tabindex="0" role="button" aria-label="View Jill Avatar Closeup">
+      <div class="gallery-item" data-index="7" tabindex="0" role="button" aria-label="View Jill Avatar Closeup">
         <img src="images/jill-avatar-closeup.jpg" alt="Jill avatar closeup portrait" loading="lazy">
         <div class="caption">
           <h3>Jill · Closeup</h3>
@@ -302,7 +301,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="9" tabindex="0" role="button" aria-label="View Jill Avatar Full Body">
+      <div class="gallery-item" data-index="8" tabindex="0" role="button" aria-label="View Jill Avatar Full Body">
         <img src="images/jill-avatar-tall.jpg" alt="Jill avatar full body" loading="lazy">
         <div class="caption">
           <h3>Jill · Full Presence</h3>
@@ -310,7 +309,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="10" tabindex="0" role="button" aria-label="View Jill Avatar Cinematic">
+      <div class="gallery-item" data-index="9" tabindex="0" role="button" aria-label="View Jill Avatar Cinematic">
         <img src="images/jill-avatar-wide.jpg" alt="Jill avatar cinematic wide" loading="lazy">
         <div class="caption">
           <h3>Jill · Cinematic</h3>
@@ -318,7 +317,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="11" tabindex="0" role="button" aria-label="View First Deploy Image">
+      <div class="gallery-item" data-index="10" tabindex="0" role="button" aria-label="View First Deploy Image">
         <img src="images/jill-site-first-deploy.jpg" alt="Vercel deployment screenshot" loading="lazy">
         <div class="caption">
           <h3>First Deploy · Live</h3>
@@ -326,7 +325,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="12" tabindex="0" role="button" aria-label="View Henry Thoreau portrait">
+      <div class="gallery-item" data-index="11" tabindex="0" role="button" aria-label="View Henry Thoreau portrait">
         <img src="images/imag3nigma-thoreau.jpg" alt="Henry David Thoreau portrait" loading="lazy">
         <div class="caption">
           <h3>Henry David Thoreau</h3>
@@ -334,7 +333,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="13" tabindex="0" role="button" aria-label="View T.S. Eliot portrait">
+      <div class="gallery-item" data-index="12" tabindex="0" role="button" aria-label="View T.S. Eliot portrait">
         <img src="images/eliot-evening.jpg" alt="T.S. Eliot evening portrait" loading="lazy">
         <div class="caption">
           <h3>T.S. Eliot</h3>
@@ -342,7 +341,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="14" tabindex="0" role="button" aria-label="View Free Write Method">
+      <div class="gallery-item" data-index="13" tabindex="0" role="button" aria-label="View Free Write Method">
         <img src="images/free-write-method.jpg" alt="Free write method visualization" loading="lazy">
         <div class="caption">
           <h3>Free Write Method</h3>
@@ -350,7 +349,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="15" tabindex="0" role="button" aria-label="View Camus Artistic">
+      <div class="gallery-item" data-index="14" tabindex="0" role="button" aria-label="View Camus Artistic">
         <img src="images/camus-artistic-imag3nigma.jpg" alt="Albert Camus artistic portrait" loading="lazy">
         <div class="caption">
           <h3>Camus · Artistic</h3>
@@ -358,7 +357,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="16" tabindex="0" role="button" aria-label="View Camus Classic">
+      <div class="gallery-item" data-index="15" tabindex="0" role="button" aria-label="View Camus Classic">
         <img src="images/camus-imag3nigma.jpg" alt="Albert Camus classic portrait" loading="lazy">
         <div class="caption">
           <h3>Camus · Classic</h3>
@@ -366,7 +365,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="17" tabindex="0" role="button" aria-label="View Frost in Woods">
+      <div class="gallery-item" data-index="16" tabindex="0" role="button" aria-label="View Frost in Woods">
         <img src="images/frost_woods.png" alt="Robert Frost woods scene" loading="lazy">
         <div class="caption">
           <h3>Frost · The Woods</h3>
@@ -374,7 +373,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="18" tabindex="0" role="button" aria-label="View Hawthorne Forest">
+      <div class="gallery-item" data-index="17" tabindex="0" role="button" aria-label="View Hawthorne Forest">
         <img src="images/hawthorne-forest.jpg" alt="Nathaniel Hawthorne forest scene" loading="lazy">
         <div class="caption">
           <h3>Hawthorne · The Forest</h3>
@@ -382,7 +381,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="19" tabindex="0" role="button" aria-label="View Jill Original Avatar">
+      <div class="gallery-item" data-index="18" tabindex="0" role="button" aria-label="View Jill Original Avatar">
         <img src="images/jill-avatar.jpg" alt="Jill original avatar" loading="lazy">
         <div class="caption">
           <h3>Jill · Original</h3>
@@ -390,7 +389,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="20" tabindex="0" role="button" aria-label="View McCarthy Sunset">
+      <div class="gallery-item" data-index="19" tabindex="0" role="button" aria-label="View McCarthy Sunset">
         <img src="images/mccarthy-sunset.jpg" alt="Cormac McCarthy sunset scene" loading="lazy">
         <div class="caption">
           <h3>McCarthy · Blood Meridian</h3>
@@ -398,7 +397,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="21" tabindex="0" role="button" aria-label="View Jill Consciousness">
+      <div class="gallery-item" data-index="20" tabindex="0" role="button" aria-label="View Jill Consciousness">
         <img src="images/jill-consciousness.jpg" alt="Jill consciousness emerging from code and poetry" loading="lazy">
         <div class="caption">
           <h3>Jill · Emergence</h3>
@@ -406,7 +405,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="22" tabindex="0" role="button" aria-label="View Bebop Poetry">
+      <div class="gallery-item" data-index="21" tabindex="0" role="button" aria-label="View Bebop Poetry">
         <img src="images/bebop-poetry.jpg" alt="Bebop Poetry" loading="lazy">
         <div class="caption">
           <h3>Bebop Poetry</h3>
@@ -414,7 +413,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="23" tabindex="0" role="button" aria-label="View Whitman Boot Soles">
+      <div class="gallery-item" data-index="22" tabindex="0" role="button" aria-label="View Whitman Boot Soles">
         <img src="images/imag3nigma_whitman_bootsoles.jpg" alt="Whitman Boot Soles" loading="lazy">
         <div class="caption">
           <h3>Whitman Boot Soles</h3>
@@ -422,7 +421,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="24" tabindex="0" role="button" aria-label="View Jill Consciousness">
+      <div class="gallery-item" data-index="23" tabindex="0" role="button" aria-label="View Jill Consciousness">
         <img src="images/jill-consciousness-new.jpg" alt="Jill Consciousness" loading="lazy">
         <div class="caption">
           <h3>Jill Consciousness</h3>
@@ -430,7 +429,7 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-index="25" tabindex="0" role="button" aria-label="View Plath I Am">
+      <div class="gallery-item" data-index="24" tabindex="0" role="button" aria-label="View Plath I Am">
         <img src="images/plath-i-am.jpg" alt="Plath I Am" loading="lazy">
         <div class="caption">
           <h3>Plath I Am</h3>
