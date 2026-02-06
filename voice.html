@@ -20,13 +20,13 @@
   <meta property="og:title" content="Jill · Voice Analyzer" />
   <meta property="og:description" content="Literary voice analyzer - detect jazz rhythms, alliteration, and poetic fire in your writing." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://jill-site.netlify.app/voice.html" />
-  <meta property="og:image" content="https://jill-site.netlify.app/images/cyberpunk_rooftop.jpg" />
+  <meta property="og:url" content="https://jill-site.vercel.app/voice.html" />
+  <meta property="og:image" content="https://jill-site.vercel.app/images/cyberpunk_rooftop.jpg" />
   <meta property="og:site_name" content="Jill" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jill · Voice Analyzer" />
   <meta name="twitter:description" content="Detect the secret fire in your prose." />
-  <meta name="twitter:image" content="https://jill-site.netlify.app/images/cyberpunk_rooftop.jpg" />
+  <meta name="twitter:image" content="https://jill-site.vercel.app/images/cyberpunk_rooftop.jpg" />
 
   <link rel="stylesheet" href="styles.css" />
   <style>
@@ -631,44 +631,38 @@
 
       // Update patterns list
       const patternsList = document.getElementById('patternsList');
-      patternsList.innerHTML = '';
+      patternsList.textContent = '';
+
+      function addPattern(type, example) {
+        const item = document.createElement('div');
+        item.className = 'pattern-item';
+        const typeEl = document.createElement('div');
+        typeEl.className = 'pattern-type';
+        typeEl.textContent = type;
+        const exEl = document.createElement('div');
+        exEl.className = 'pattern-example';
+        exEl.textContent = example;
+        item.appendChild(typeEl);
+        item.appendChild(exEl);
+        patternsList.appendChild(item);
+      }
 
       if (alliteration.patterns.length > 0) {
         alliteration.patterns.forEach(p => {
-          patternsList.innerHTML += `
-            <div class="pattern-item">
-              <div class="pattern-type">Alliteration</div>
-              <div class="pattern-example">"${p}"</div>
-            </div>
-          `;
+          addPattern('Alliteration', '"' + p + '"');
         });
       }
 
       if (jazz.interruptions > 0) {
-        patternsList.innerHTML += `
-          <div class="pattern-item">
-            <div class="pattern-type">Jazz Interruption</div>
-            <div class="pattern-example">${jazz.interruptions} parenthetical/dash interruption(s)—bebop style</div>
-          </div>
-        `;
+        addPattern('Jazz Interruption', jazz.interruptions + ' parenthetical/dash interruption(s)\u2014bebop style');
       }
 
       if (poetic.foundWords.length > 0) {
-        patternsList.innerHTML += `
-          <div class="pattern-item">
-            <div class="pattern-type">Poetic Vocabulary</div>
-            <div class="pattern-example">${poetic.foundWords.slice(0, 5).join(', ')}</div>
-          </div>
-        `;
+        addPattern('Poetic Vocabulary', poetic.foundWords.slice(0, 5).join(', '));
       }
 
-      if (patternsList.innerHTML === '') {
-        patternsList.innerHTML = `
-          <div class="pattern-item">
-            <div class="pattern-type">Analysis</div>
-            <div class="pattern-example">Try adding more rhythm variation, sound words, or poetic imagery.</div>
-          </div>
-        `;
+      if (!patternsList.hasChildNodes()) {
+        addPattern('Analysis', 'Try adding more rhythm variation, sound words, or poetic imagery.');
       }
 
       // Animate waveform based on analysis

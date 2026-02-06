@@ -187,145 +187,6 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* Spotify Player */
-    .spotify-player {
-      background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 3rem;
-      border: 1px solid #333;
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .spotify-artwork {
-      width: 100px;
-      height: 100px;
-      border-radius: 8px;
-      background: var(--subtle);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-
-    .spotify-artwork img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .spotify-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .spotify-info h2 {
-      margin: 0 0 0.5rem;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--dim);
-    }
-
-    .spotify-track {
-      color: var(--fg);
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .spotify-artist {
-      color: var(--dim);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .spotify-progress {
-      height: 4px;
-      background: #333;
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 1rem;
-    }
-
-    .spotify-progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #1DB954, #1ed760);
-      border-radius: 2px;
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-
-    .spotify-controls {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .spotify-btn {
-      background: transparent;
-      border: none;
-      color: var(--fg);
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 50%;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .spotify-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transform: scale(1.1);
-    }
-
-    .spotify-btn.play-pause {
-      width: 48px;
-      height: 48px;
-      background: var(--accent);
-      color: var(--bg);
-    }
-
-    .spotify-btn.play-pause:hover {
-      background: #ff1493;
-      transform: scale(1.05);
-    }
-
-    .spotify-connect {
-      background: #1DB954;
-      color: #000;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 20px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .spotify-connect:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
-    }
-
-    .spotify-device {
-      font-size: 0.75rem;
-      color: #1DB954;
-      margin-top: 0.5rem;
-    }
-
     /* Mood Cards */
     .mood-grid {
       display: grid;
@@ -383,16 +244,6 @@
       background: var(--accent);
       color: var(--bg);
       border-color: var(--accent);
-    }
-
-    /* Playing state animation */
-    .spotify-player.is-playing .spotify-artwork {
-      animation: pulse-glow 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse-glow {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.4); }
-      50% { box-shadow: 0 0 20px 5px rgba(29, 185, 84, 0.2); }
     }
   </style>
 </head>
@@ -459,30 +310,6 @@
       </div>
     </div>
 
-    <!-- Now Playing (Static Display) -->
-    <div class="spotify-player" id="spotify-player">
-      <div class="spotify-artwork" id="artwork-container">
-        <img id="spotify-img" src="images/jill-consciousness.jpg" alt="Album Art">
-      </div>
-      <div class="spotify-info">
-        <h2>Now Playing</h2>
-        <div id="spotify-track" class="spotify-track">Autumn Leaves</div>
-        <div id="spotify-artist" class="spotify-artist">Cannonball Adderley</div>
-        <div class="spotify-progress">
-          <div id="progress-bar" class="spotify-progress-bar" style="width: 32%; animation: progress 30s linear infinite;"></div>
-        </div>
-        <div style="font-size:0.75rem;color:var(--dim);font-style:italic;">Somethin' Else · Blue Note, 1958 · Miles on trumpet</div>
-      </div>
-    </div>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-            </svg>
-          </button>
-        </div>
-        <div id="spotify-device" class="spotify-device" style="display:none;">Connected to Jill Site Player</div>
-      </div>
-    </div>
-
     <!-- Mood Grid -->
     <div class="mood-grid">
       <div class="mood-card">
@@ -525,112 +352,45 @@
     (function() {
       const canvas = document.getElementById('waveform-canvas');
       const ctx = canvas.getContext('2d');
-      
+
       function resize() {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
       }
       resize();
       window.addEventListener('resize', resize);
-      
+
       let offset = 0;
-      
+
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+
         const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
         gradient.addColorStop(0, 'rgba(255, 105, 180, 0.1)');
         gradient.addColorStop(0.5, 'rgba(255, 20, 147, 0.2)');
         gradient.addColorStop(1, 'rgba(255, 105, 180, 0.1)');
-        
+
         ctx.fillStyle = gradient;
         ctx.beginPath();
         ctx.moveTo(0, canvas.height / 2);
-        
+
         for (let x = 0; x < canvas.width; x += 5) {
-          const y = canvas.height / 2 + 
+          const y = canvas.height / 2 +
             Math.sin((x + offset) * 0.02) * 20 +
             Math.sin((x + offset * 2) * 0.01) * 10 +
             Math.random() * 5;
           ctx.lineTo(x, y);
         }
-        
+
         ctx.lineTo(canvas.width, canvas.height);
         ctx.lineTo(0, canvas.height);
         ctx.fill();
-        
+
         offset += 2;
         requestAnimationFrame(draw);
       }
-      
-      draw();
-    })();
 
-    // Check for Spotify token in URL
-    (function() {
-      const hash = window.location.hash.substring(1);
-      if (hash) {
-        const params = new URLSearchParams(hash);
-        const token = params.get('access_token');
-        const error = params.get('error');
-        
-        if (error) {
-          console.error('Spotify auth error:', error);
-          alert('Spotify connection failed: ' + error);
-          return;
-        }
-        
-        if (token) {
-          console.log('Got Spotify token');
-          localStorage.setItem('spotify_token', token);
-          // Clear hash and reload clean
-          window.history.replaceState({}, document.title, window.location.pathname);
-          
-          // Show connected state
-          document.getElementById('spotify-connect-container').style.display = 'none';
-          document.getElementById('player-controls').style.display = 'flex';
-          document.getElementById('spotify-device').style.display = 'block';
-          document.getElementById('spotify-player').classList.add('is-playing');
-          
-        // Poll Spotify Now Playing every 30 seconds
-    (function() {
-      async function updateNowPlaying() {
-        try {
-          const response = await fetch('/api/now-playing');
-          if (!response.ok) throw new Error('API error');
-          
-          const data = await response.json();
-          
-          if (data.track) {
-            document.getElementById('spotify-track').textContent = data.track.name;
-            document.getElementById('spotify-artist').textContent = data.track.artist;
-            
-            if (data.track.image) {
-              document.getElementById('spotify-img').src = data.track.image;
-              document.getElementById('spotify-img').style.display = 'block';
-            }
-            
-            if (data.track.duration_ms && data.track.progress_ms) {
-              const progress = (data.track.progress_ms / data.track.duration_ms) * 100;
-              document.getElementById('progress-bar').style.width = progress + '%';
-            }
-            
-            if (data.is_playing) {
-              document.getElementById('spotify-player').classList.add('is-playing');
-            } else {
-              document.getElementById('spotify-player').classList.remove('is-playing');
-            }
-          }
-        } catch (err) {
-          console.log('Spotify not connected yet');
-        }
-      }
-      
-      // Initial load
-      updateNowPlaying();
-      
-      // Poll every 30 seconds
-      setInterval(updateNowPlaying, 30000);
+      draw();
     })();
   </script>
 </body>

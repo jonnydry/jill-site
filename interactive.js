@@ -228,6 +228,7 @@ You got me dancing! 💃🔥`;
     canvas: null,
     ctx: null,
     drops: [],
+    resizeHandler: null,
     characters: '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン',
 
     init() {
@@ -260,6 +261,10 @@ You got me dancing! 💃🔥`;
 
     deactivate() {
       this.active = false;
+      if (this.resizeHandler) {
+        window.removeEventListener('resize', this.resizeHandler);
+        this.resizeHandler = null;
+      }
       if (this.canvas) {
         this.canvas.remove();
         this.canvas = null;
@@ -288,13 +293,14 @@ You got me dancing! 💃🔥`;
       // Initialize drops
       const columns = Math.floor(this.canvas.width / 20);
       this.drops = Array(columns).fill(1);
-      
-      window.addEventListener('resize', () => {
+
+      this.resizeHandler = () => {
         if (this.canvas) {
           this.canvas.width = window.innerWidth;
           this.canvas.height = window.innerHeight;
         }
-      });
+      };
+      window.addEventListener('resize', this.resizeHandler);
     },
 
     startMatrix() {
@@ -665,17 +671,18 @@ You got me dancing! 💃🔥`;
     },
 
     animate() {
-      this.particles.forEach((p, i) => {
+      for (let i = this.particles.length - 1; i >= 0; i--) {
+        const p = this.particles[i];
         p.life -= 0.05;
         p.el.style.opacity = p.life * 0.6;
         p.el.style.transform = `translate(-50%, -50%) scale(${p.life})`;
-        
+
         if (p.life <= 0) {
           p.el.remove();
           this.particles.splice(i, 1);
         }
-      });
-      
+      }
+
       requestAnimationFrame(() => this.animate());
     }
   };
