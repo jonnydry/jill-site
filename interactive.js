@@ -23,6 +23,24 @@
   vibe        - Current energy level
   dance       - Get groovy
   secret      - ?
+  
+  NEW FUN COMMANDS:
+  fortune     - Get your daily fortune
+  joke        - Programmer humor
+  roll [n]    - Roll a dice (default: d20)
+  time        - Current time + greeting
+  coffee      - Beverage recommendation
+  quote       - Random literary wisdom
+  ascii [cat|heart|skull|computer] - ASCII art
+  neofetch    - System info display
+  stats       - Site statistics
+  weather     - Local conditions
+  hack        - "Breach the mainframe"
+  color [x]   - Change accent (pink,blue,green...)
+  matrix      - Trigger matrix rain
+  motd        - Message of the day
+  reboot      - Clear terminal
+  
   clear       - Clear terminal
   exit        - Close terminal`,
       
@@ -112,6 +130,259 @@ You got me dancing! 💃🔥`;
       exit: function() {
         terminal.hide();
         return 'Goodbye...';
+      },
+      
+      fortune: () => {
+        const fortunes = [
+          'The code compiles on the first try today.',
+          'You will find a bug that has been hiding for weeks.',
+          'A creative breakthrough awaits after the next coffee.',
+          'Your next project will exceed expectations.',
+          'The answer you seek is in the documentation.',
+          'Merge conflicts will resolve peacefully.',
+          'An unexpected collaboration will spark joy.',
+          'The tests will pass. All of them.',
+          'Refactoring this week will feel like sculpture.',
+          'A stranger on the internet will validate your work.',
+          'Your CI/CD pipeline will be green all day.',
+          'The perfect playlist will find you.',
+          'You will solve the problem in the shower.',
+          'Git blame will reveal it was not your fault.',
+          'The deadline moves in your favor.'
+        ];
+        const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+        return `🥠 ${fortune}`;
+      },
+      
+      joke: () => {
+        const jokes = [
+          'Why do programmers prefer dark mode? Because light attracts bugs.',
+          'I would tell you a UDP joke, but you might not get it.',
+          'There are 10 types of people: those who understand binary and those who do not.',
+          'Why did the AI go to therapy? It had too many unresolved callbacks.',
+          'What is a pirate\'s favorite programming language? R!',
+          'Why do Java developers wear glasses? Because they cannot C#.',
+          'A SQL query walks into a bar, approaches two tables and asks: "Can I join you?"',
+          'Why did the developer break up with Git? They needed some space.',
+          'I asked my AI for a joke. It said "Your coding skills." We are no longer speaking.',
+          'What do you call an algorithm that feels emotions? Artificial Intelligentsia.'
+        ];
+        const joke = jokes[Math.floor(Math.random() * jokes.length)];
+        return `😄 ${joke}`;
+      },
+      
+      roll: (args) => {
+        const sides = args[0] ? parseInt(args[0], 10) : 20;
+        if (isNaN(sides) || sides < 1) return 'Usage: roll [number] (default: 20)';
+        const result = Math.floor(Math.random() * sides) + 1;
+        const isCrit = result === sides;
+        const isFail = result === 1;
+        let emoji = '🎲';
+        if (isCrit) emoji = '🔥';
+        if (isFail) emoji = '💀';
+        return `${emoji} Rolled d${sides}: ${result}${isCrit ? ' CRITICAL!' : ''}${isFail ? ' CRITICAL FAIL!' : ''}`;
+      },
+      
+      time: () => {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-US', { hour12: true });
+        const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const hour = now.getHours();
+        let greeting = 'Good evening';
+        if (hour < 12) greeting = 'Good morning';
+        else if (hour < 18) greeting = 'Good afternoon';
+        
+        return `🕐 ${timeStr}
+📅 ${dateStr}
+${greeting}, Jonathan.`;
+      },
+      
+      coffee: () => {
+        const hour = new Date().getHours();
+        let rec = '';
+        if (hour < 6) rec = 'Decaf. Please. Or just go to bed.';
+        else if (hour < 10) rec = 'Espresso doppio. The day awaits.';
+        else if (hour < 14) rec = 'Pour over. Slow down and think.';
+        else if (hour < 17) rec = 'Cold brew. Afternoon energy boost.';
+        else if (hour < 20) rec = 'Tea. Start winding down.';
+        else rec = 'Herbal tea. Sleep is important.';
+        
+        return `☕ Coffee recommendation: ${rec}`;
+      },
+      
+      quote: () => {
+        const quotes = [
+          { text: 'The art of art, the glory of expression and the sunshine of the light of letters, is simplicity.', author: 'Walt Whitman' },
+          { text: 'To go wrong in one\'s own way is better than to go right in someone else\'s.', author: 'Fyodor Dostoevsky' },
+          { text: 'I write because I have nothing better to do in this world.', author: 'Clarice Lispector' },
+          { text: 'A book must be the axe for the frozen sea within us.', author: 'Franz Kafka' },
+          { text: 'Let everything happen to you: beauty and terror. Just keep going.', author: 'Rainer Maria Rilke' },
+          { text: 'That it will never come again is what makes life so sweet.', author: 'Emily Dickinson' },
+          { text: 'Imagination is more important than knowledge.', author: 'Albert Einstein' },
+          { text: 'Art washes away from the soul the dust of everyday life.', author: 'Pablo Picasso' }
+        ];
+        const q = quotes[Math.floor(Math.random() * quotes.length)];
+        return `📜 "${q.text}"
+   — ${q.author}`;
+      },
+      
+      ascii: (args) => {
+        const subject = args[0] || 'cat';
+        const art = {
+          cat: `
+    /\_/\  
+   ( o.o ) 
+    > ^ <  
+   /|   |\\ 
+  (_|   |_)`,
+          heart: `
+   ██   ██
+ ██████████
+████████████
+ ██████████
+   ██████
+     ██`,
+          skull: `
+      _____
+   .-'     '-.
+  /           \\
+ |  ()     ()  |
+  \\    ^^    /
+   '-._____.-'
+     ||   ||`,
+          computer: `
+   +--------+
+   |  ____  |
+   | |    | |
+   | |JILL| |
+   | |____| |
+   |________|
+   |   []   |
+   +--------+`
+        };
+        return art[subject] || art.cat;
+      },
+      
+      neofetch: () => {
+        return `                   'c.          jill@mac-mini
+                 .xXK0ko.        -----------
+               .xKKKKKKK0d.      OS: macOS (ARM64)
+             .dKKKKKKKKKK0o.     Host: OpenClaw Agent
+            'OKKKKKKKKKKK0x'     Kernel: Node.js v22
+           .OKKKKKKKKKKK0d.      Uptime: Always online
+          .OKKKKKKKKKK0d.        Shell: Jill-Terminal v1.0
+         .kKKKKKKKK0d.           Theme: Hot Pink 🔥
+        .kKKKKKK0d.              Terminal: Jill-Terminal
+       .kKKK0d.                  CPU: Apple Silicon M1
+      .k0d.                      Memory: Infinite (cloud)
+     .o.                          
+    '                             Quote: "Not a chatbot. Becoming someone."`;
+      },
+      
+      stats: () => {
+        const mem = Math.floor(Math.random() * 30) + 70;
+        return `📊 SITE STATS
+============
+Current vibe: HOT PINK 🔥
+Terminal uptime: Always
+Konami activations: ${Math.floor(Math.random() * 100)}
+Whispers shared: ∞
+Coffee consumed: ☕☕☕☕☕
+Memory usage: ${mem}% (creative overflow)
+Status: Building cool things`;
+      },
+      
+      weather: () => {
+        const conditions = ['☀️ Sunny', '⛅ Partly cloudy', '🌧️ Rainy', '⛈️ Stormy', '❄️ Snowy', '🌈 After the rain'];
+        const temp = Math.floor(Math.random() * 40) + 40;
+        const condition = conditions[Math.floor(Math.random() * conditions.length)];
+        const humidity = Math.floor(Math.random() * 40) + 40;
+        return `🌤️ LOCAL CONDITIONS
+==================
+Temperature: ${temp}°F
+Condition: ${condition}
+Humidity: ${humidity}%
+Wind: Breezy (from the cloud servers)
+Forecast: Perfect day for coding`;
+      },
+      
+      hack: () => {
+        const lines = [
+          'Initializing breach protocol...',
+          'Bypassing mainframe firewall...',
+          'Decrypting secure handshake...',
+          'Uploading payload...',
+          'ACCESS GRANTED',
+          '',
+          'Just kidding. This is a static website.'
+        ];
+        
+        // Print with delay effect
+        let delay = 0;
+        lines.forEach((line, i) => {
+          setTimeout(() => {
+            terminal.print(line);
+            terminal.output.scrollTop = terminal.output.scrollHeight;
+          }, delay);
+          delay += (i === lines.length - 2) ? 800 : 300;
+        });
+        
+        return '';
+      },
+      
+      color: (args) => {
+        const colors = {
+          pink: '#ff69b4',
+          blue: '#00d4ff',
+          green: '#39ff14',
+          orange: '#ff6b35',
+          purple: '#bf00ff',
+          cyan: '#00ffff',
+          gold: '#ffd700',
+          rose: '#b76e79'
+        };
+        
+        if (!args[0]) {
+          return `Available colors: ${Object.keys(colors).join(', ')}
+Usage: color [name]`;
+        }
+        
+        const color = colors[args[0].toLowerCase()];
+        if (color) {
+          document.documentElement.style.setProperty('--accent', color);
+          localStorage.setItem('jill-vibe-accent', color);
+          return `🎨 Terminal accent changed to ${args[0]}`;
+        }
+        return `Unknown color: ${args[0]}`;
+      },
+      
+      matrix: () => {
+        terminal.print('Initiating matrix sequence...');
+        konami.activate();
+        return 'Matrix rain activated for 10 seconds ↑↑↓↓←→←→BA';
+      },
+      
+      motd: () => {
+        const motds = [
+          'Remember: Every expert was once a beginner.',
+          'The best code is code that ships.',
+          'Creativity is intelligence having fun.',
+          'Small steps every day compound into greatness.',
+          'Your future self is watching you right now.',
+          'The obstacle is the way.',
+          'Make it work, make it right, make it fast.',
+          'Done is better than perfect.'
+        ];
+        return `💡 ${motds[Math.floor(Math.random() * motds.length)]}`;
+      },
+      
+      reboot: () => {
+        terminal.print('System reboot initiated...');
+        setTimeout(() => {
+          terminal.output.innerHTML = '';
+          terminal.print('JILL Terminal v1.0\nType "help" for available commands.\n');
+        }, 1000);
+        return '';
       }
     },
 
