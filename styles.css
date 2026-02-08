@@ -5,7 +5,7 @@
   --bg: #0a0a0a;
   --fg: #e8e8e8;
   --accent: #ff69b4;
-  --dim: #666;
+  --dim: #888;
   --subtle: #1a1a1a;
   --font: 'Inter', system-ui, sans-serif;
   --mono: 'JetBrains Mono', 'Fira Code', monospace;
@@ -526,9 +526,6 @@ body.terminal-open::before {
 
 /* ===== PAGE TRANSITIONS ===== */
 body {
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
 
 body.loaded {
   opacity: 1;
@@ -543,4 +540,12 @@ html {
 ::selection {
   background: var(--accent);
   color: var(--bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
